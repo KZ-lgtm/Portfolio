@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin: 0; background: #ffffff; color: #1b1f24; font-family: "Segoe UI", system-ui, sans-serif; font-size: 12px; line-height: 1.4; }
+    a { color: #b45309; } a:hover { color: #92400e; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #c9ced3; padding: 6px 7px; vertical-align: top; text-align: left; }
+    th { background: #eef1f4; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+    td.c { text-align: center; white-space: nowrap; }
+    td.pre { white-space: pre-line; }
+    .H { background: #f8d0d0; color: #8a1010; font-weight: 700; } .M { background: #fbe8c4; color: #7a4a00; font-weight: 700; }
+    .L { background: #d8f0dc; color: #1d5c2c; font-weight: 700; } .N { background: #e8ecef; color: #3d474d; font-weight: 700; }
+    .mx td { text-align: center; padding: 8px; }
+    .tag { display: inline-block; padding: 1px 6px; border-radius: 4px; background: #eef1f4; font-size: 11px; margin: 1px 2px 1px 0; }
+  </style>
+</helmet>
+<div style="width: 1200px; box-sizing: border-box; padding: 40px 44px; background: #ffffff; display: flex; flex-direction: column; gap: 18px;">
+  <div style="display: flex; flex-direction: column; gap: 4px; border-bottom: 3px solid #ff6a13; padding-bottom: 12px;">
+    <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6b7780;">Machine risk assessment · ISO 12100:2010 · Doc RA-PP-STACKING-01 · RevA</div>
+    <h1 style="margin: 0; font-size: 24px;">PP flooring stacking cell — embossing (4) → traction + cutter (5) → IRB 4600 flip-fork stacking, face to face (6) → 6-station pallet conveyor → AGV / forklift</h1>
+    <div style="color: #4a555d;">Assessment date [DATE] · Assessed by [NAME / FUNCTION] · Reviewed by [NAME] · Machine limits per ISO 12100 §5.3 as listed below.</div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 14px;">1 · Machine limits (ISO 12100 §5.3)</h2>
+      <div>Equipment: ABB IRB 4600-40/2.55 (kinematics and joint limits from its RobotStudio PIM.xml) floor-mounted at the origin, front to −X; fork gripper ≈ 22 kg bolted to the A6 flange, flange facing sideways along the tines — robot axis 6 flips the sheet (crossbar 1400 mm, 4 fixed tines + 4 pneumatic clamp fingers 1230 mm, stripper bar); pick table (rollers with fork slots, servo end stop) at x −2.9 → −1.6 / y 0.55 → 2.45 m, roller top 0.95 m; infeed buffer belt through the top fence (hood + 80 mm slot); run-out belt with manual off-load outside; 2-roller embossing (4), traction and flying cutter (5) from the line supplier; 6-station chain conveyor at y −2.3 m (top 0.40 m, 0.3 m/s): 1 pallet stacker (10 pallets) · 2 empty · 3 stacking (x −1.3) · 4–6 full-pallet buffer; stations 2–4 in a fenced tunnel; AGV / forklift lanes at both conveyor ends; cabinets outside the fence.</div>
+      <div>Product: PP flooring sheets 1000 wide × 1000 / 1300 / 1500 long × 3 mm (≈ 3.9–5.9 kg at 1.3 t/m³), decor face up from the line; stacked decor face to decor face (every 2nd sheet flipped), 200 sheets per pallet (adjustable 2–400) → 600 mm, ≤ 1.2 t; pallets 1600 × 1100 with slip sheet.</div>
+      <div>Rates and speeds: line 6 sheets / min (web 6–9 m/min); robot TCP 2500 mm/s (SafeMove Tool Speed Supervision), 250 mm/s in the 60 mm approach zones, tine withdrawal 1500 mm/s; flip 180° by A6 in 0.9 s; belts 1.2 m/s; pallet conveyor 0.3 m/s; measured robot cycle 4.4–5.7 s, capacity 7.3 sheets / min.</div>
+      <div>Space limits: fence x −3.5 → 1.2 m, y −1.5 → 3.2 m, H2000, plus the pallet tunnel x −4.85 → 2.0 m, y −3.3 → −1.5 m; openings: infeed belt (top, x −2.95 → −1.5 m, hood), door (right, y 0.6 → 1.8 m), tunnel curtains (x −4.85 and 2.0 m), stacker loading side (x −7.15 m).</div>
+      <div>Use: automatic operation with operators outside (HMI, manual off-load, stacker refill by forklift, shipping by AGV / forklift); intervention through the guard-locked door; maintenance under LOTO. The upstream extrusion / calender (1–3) is not part of this assessment.</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 14px;">2 · Applicable standards</h2>
+      <div>
+        <span class="tag">ISO 12100:2010</span> Safety of machinery — risk assessment and risk reduction (3-step method)<br>
+        <span class="tag">ISO/TR 14121-2</span> Risk assessment — practical guidance and examples (risk matrix used here)<br>
+        <span class="tag">ISO 10218-1 / -2</span> Industrial robots — robot and robot system / cell integration<br>
+        <span class="tag">ISO 11161</span> Integrated manufacturing systems — zones, spans of control (bay zoning)<br>
+        <span class="tag">ISO 13849-1 / -2</span> Safety-related parts of control systems — PL, Category; validation<br>
+        <span class="tag">IEC 60204-1</span> Electrical equipment of machines<br>
+        <span class="tag">ISO 13850</span> Emergency stop function<br>
+        <span class="tag">ISO 13855</span> Positioning of safeguards with respect to approach speeds (S = K·T + C)<br>
+        <span class="tag">ISO 13857</span> Safety distances — reaching over / through openings<br>
+        <span class="tag">ISO 14120</span> Guards — fixed and movable<br>
+        <span class="tag">ISO 14119</span> Interlocking devices, guard locking<br>
+        <span class="tag">ISO 14118</span> Prevention of unexpected start-up<br>
+        <span class="tag">IEC 61496-1 / -2 / -3</span> ESPE — light curtains (Type 4), laser scanners (Type 3)<br>
+        <span class="tag">IEC 62046</span> Application of protective equipment to detect persons, muting<br>
+        <span class="tag">EN 619</span> Unit-load conveyors — safety requirements<br>
+        <span class="tag">ISO 3691-1</span> Industrial trucks — self-propelled trucks (counterbalance forklift)<br>
+        <span class="tag">ISO 11228-1 / -2</span> Ergonomics — manual lifting, pushing and pulling<br>
+        <span class="tag">ISO 14122</span> Permanent means of access to machinery (pedestal, platforms)<br>
+        <span class="tag">IEC 61439-1 / -2</span> Low-voltage switchgear and controlgear assemblies (MCP, sub-cabinets)<br>
+        <span class="tag">IEC 60364-7-729</span> Low-voltage installations — operating and maintenance gangways (cabinet service areas)<br>
+        <span class="tag">IEC 61537</span> Cable management — cable tray and cable ladder systems (supports, spans, loads)<br>
+        <span class="tag">IEC 60364-5-52</span> Selection and erection of wiring systems (tray fill, protection against damage)<br>
+        <span class="tag">EN 1114-1 / -3</span> Plastics machines — extrusion lines, haul-offs (line machines 4 / 5, supplier)<br>
+        <span class="tag">ISO 3691-4</span> Driverless industrial trucks (AGV)<br>
+        <span class="tag">ISO 4414</span> Pneumatic fluid power — safety of the clamp circuit<br>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <h2 style="margin: 0; font-size: 14px;">3 · Risk estimation method (ISO/TR 14121-2 matrix)</h2>
+    <div style="display: grid; grid-template-columns: 2fr 3fr; gap: 18px;">
+      <table class="mx">
+        <tr><th>Severity ↓ / Probability →</th><th>Very likely</th><th>Likely</th><th>Unlikely</th><th>Remote</th></tr>
+        <tr><th>Catastrophic — Death or permanent disability</th><td class="H">High</td><td class="H">High</td><td class="H">High</td><td class="M">Medium</td></tr>
+        <tr><th>Serious — Irreversible injury (amputation, fracture with lasting damage)</th><td class="H">High</td><td class="H">High</td><td class="M">Medium</td><td class="L">Low</td></tr>
+        <tr><th>Moderate — Reversible injury requiring medical treatment</th><td class="H">High</td><td class="M">Medium</td><td class="L">Low</td><td class="N">Negligible</td></tr>
+        <tr><th>Minor — First-aid injury</th><td class="M">Medium</td><td class="L">Low</td><td class="N">Negligible</td><td class="N">Negligible</td></tr>
+      </table>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div><b>Probability</b> combines exposure, probability of the hazardous event and possibility of avoidance (ISO 12100 §5.5.2). <b>Initial risk</b> is estimated with no safeguards; <b>residual risk</b> after the listed measures.</div>
+        <div><b>Acceptance:</b> <b>High</b> — Not acceptable — further risk reduction mandatory · <b>Medium</b> — Tolerable only with the listed measures implemented, verified and documented (ALARP) · <b>Low</b> — Acceptable · <b>Negligible</b> — Acceptable, no action</div>
+        <div><b>PLr</b> from the ISO 13849-1 risk graph (S · F · P); ISO 10218-2 sets PL d, Category 3 as the default minimum for robot-cell safety functions.</div>
+        <div><b>Key assumptions to verify on the real cell:</b> Robot stopping time 0.5 s at 2500 mm/s with the 22 kg fork + 6 kg sheet (verify against the ABB product specification &quot;Stopping distances and stopping times&quot;, cat. 0 / 1; at 0.6 s the tunnel curtains still have 2480 ≥ 1890 mm) · safety-chain response 0.05 s · fork + sheet ≈ 28 kg with the centre of gravity ≈ 0.6 m from the flange along the tool axis, to be checked in ABB RobotLoad against the IRB 4600-40/2.55 load diagram (fallback IRB 4600-60/2.05); A6 roll 180° in 0.9 s with this inertia to be confirmed · TCP acceleration 6 m/s² in the cycle model · sheet density 1.3 t/m³ (filled PP) · sheets flat enough to run into a 50 mm fork mouth · line machines 4 / 5 CE-marked by their supplier · AGV per ISO 3691-4. Electrical plan: 400 V 3-phase TN-S supply to the MCP; typical cabinet sizes (MCP 1200 × 600 × 2000, sub-cabinets 800 × 400 × 1200, IRC5 730 × 720 × 970 mm); typical cable diameters for the tray fill; no building steel assumed — every tray is floor-supported; M12 cordsets ≤ 10 m.</div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <h2 style="margin: 0; font-size: 14px;">4 · Hazard identification and risk reduction (ISO 12100 Annex B hazard types; 3-step method)</h2>
+    <table>
+      <tr><th>ID</th><th>Phase · zone</th><th>Hazard</th><th>Initial risk</th><th>Risk reduction measures (1 inherent · 2 safeguarding · 3 information)</th><th>Safety function · PLr → PL</th><th>Residual risk</th></tr>
+      <tr><td class="c">H1</td><td>Automatic operation · robot cell</td><td>Mechanical · impact / crushing by the IRB 4600 (40 kg class), the 22 kg fork on the A6 flange (1400 × 1360 mm) and a 6 kg sheet moving at 2500 mm/s between the pick table and station 3; the fork sweeps up to 3.1 m from the robot axis · fatal injury</td><td class="c H">Catastrophic · Likely<br>HIGH</td><td class="pre">1 SafeMove Safe Zone keeps the whole tool inside the cell (fork ≥ 0.42 m inside the fence in the verified paths; station 3 only through the opening x −2.3 → −0.3 m) and Tool Speed Supervision 2500 mm/s, 250 mm/s in the 60 mm approach zones; A1 range −49° → +47° (axis range −60° → +60°); paths verified collision-free in the digital layout (≥ 100 mm over every piece of equipment, fork ≥ 0.67 m from the robot axis).
+2 Perimeter fence H2000 (ISO 14120, ISO 13857 Table 1) with pallet tunnel; guard-locked door (H12); tunnel curtains (H5); 3 OS32C laser scanners for restart prevention (H13).
+3 Signs at the door and openings; layout, zones and stopping data in the manual.</td><td>SF1 cell guard stop 工作站防護停止; SF6 SafeMove zones / tool speed 安全區域／工具限速 · PLr d → PL e</td><td class="c M">Catastrophic · Remote<br>MEDIUM</td></tr>
+      <tr><td class="c">H2</td><td>Flip of the sheet · rotating fork</td><td>Mechanical · the fork (± 0.70 m) rolled 180° by robot axis 6 in 0.9 s sweeps a cylinder 1.40 m in diameter: striking the robot forearm, the pick table, the pallet conveyor or a stack, ejecting the sheet or fork parts</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Flip only at the flip point (−1.5 / −0.3 m, carry height 1.35 m): fork radial (± 15°, A5 ≈ −20°, away from the wrist singularity) so the swept disc stays in front of the wrist, footprint over free floor (no table, belt, conveyor, pallet under it), axis ≥ half-width + 0.1 m above the floor; symmetric fork (two identical combs) → never flips back, every 2nd sheet alternates +180° / −180° (no continuous rotation, hoses stay short).
+2 Flip enable (SF7): A6 may only turn beyond its carry range while SafeMove reports the tool in the flip zone and the clamp is closed (SafeMove axis range + tool orientation supervision); verified in the digital layout (0 flips outside the clear zone in 1 h).
+3 Flip zone marked in the SafeMove configuration report.</td><td>SF7 flip enable 翻轉致能; SF6 SafeMove · PLr c → PL d</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H3</td><td>Carrying · loss of the sheet</td><td>Sheet (≤ 1500 × 1000 × 3 mm, ≤ 6 kg) slipping out of the fork on air loss, during the flip or at 2500 mm/s; falling edge-first</td><td class="c M">Serious · Unlikely<br>MEDIUM</td><td class="pre">1 Sheet clamped between two combs over its full width (no cantilevered sheet); clamp cylinders with pilot-operated check valves (clamp holds on air loss); stripper plate closes the root side.
+2 Clamp-closed and sheet-present sensors: no lift / flip / swing without both; all motion inside the fence (H1).
+3 Cut-resistant gloves for jam clearing.</td><td>SF7 flip enable 翻轉致能 · PLr c → PL d</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H4</td><td>Sheet infeed · top-fence opening</td><td>Reaching / crawling along the infeed belt through the fence into the pick table, where the fork waits in the roller gaps and the robot lifts the sheet</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Opening only for the belt (1450 mm wide); fixed-guard hood over the buffer belt from the fence line to 0.9 m outside, slot 80 mm high at its outer end, fixed guard under the belt.
+2 ISO 13857 Table 4: slot 20 &lt; e ≤ 120 mm → ≥ 850 mm; available 1780 mm from the slot to the fork footprint.
+3 Signs; manual off-load only at the run-out belt outside the hood.</td><td>— (fixed guard 固定防護)</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H5</td><td>Pallet tunnel · empty-pallet entry and full-pallet exit</td><td>Person entering along the pallet conveyor through the curtain at the tunnel end (between stations 1 / 2 or 4 / 5), or following a pallet while the curtain is muted, and reaching the fork at station 3</td><td class="c H">Catastrophic · Likely<br>HIGH</td><td class="pre">1 Stations 2–4 in a fenced tunnel (walls 0.2–0.4 m from the conveyor: no standing room); the robot reaches only station 3.
+2 F3SG-PG multi-beam curtains at both tunnel ends (x −4.85 and 2.0 m) with muting only for a pallet (4 muting sensors, sequence, time limit, muting lamp), otherwise a break stops the cell (SF2); ISO 13855: S = 1600 × (0.5 + 0.05) + 850 = 1730 mm (1890 mm at 0.6 s), available 2480 mm to the fork at station 3 — the curtains at the station 3 opening would have been 0.38 m from the fork (resolution).
+3 Muting override only by key from outside; floor marking.</td><td>SF2 tunnel curtains + muting 隧道光柵＋屏蔽 · PLr d → PL e</td><td class="c M">Catastrophic · Remote<br>MEDIUM</td></tr>
+      <tr><td class="c">H6</td><td>Pallet chain conveyor · stations 1–6</td><td>Drawing-in at chains and sprockets, crushing of feet / hands between a moving pallet (≤ 1.3 t with a 200-sheet stack) and the frame, stops or the next pallet; stations 5–6 outside the fence are accessible</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Zone-controlled chain conveyor at 0.3 m/s, pallets move only one station at a time with a following distance ≥ 0.3 m; chain drives and sprockets under fixed covers; drives on the side away from the robot.
+2 Stations 2–4 inside the tunnel (SF2); stations 5–6: E-stop at station 6, pull-cord along 4–6, warning lamp per zone; the vehicle picks at station 6 only with the zone stopped (handshake).
+3 Walkway markings; no standing on the conveyor.</td><td>SF5 E-stop 緊急停止 · PLr d → PL d</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H7</td><td>Pallet stacker · station 1</td><td>Crushing by the separating forks and the lifted pallet stack (10 × 1600 × 1100 pallets); stack falling while the forklift loads; reaching into the stacker from the loading side</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Frame with side guards (H1.6 m), separating forks with mechanical locking, stack guided by the four posts.
+2 Loading-side F3SG-PG curtain: the stacker runs only with the curtain clear; load mode (from outside, HMI) stops the stacker and forks at bottom before the curtain is bypassed for the forklift (SF3); E-stop at the stacker.
+3 Forklift drivers trained; low-level lamp (≤ 2 pallets).</td><td>SF3 stacker loading curtain / load mode 棧板機裝板光柵／裝板模式 · PLr d → PL d</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H8</td><td>Vehicles · AGV / forklift at station 6 and stacker refill</td><td>Collision / crushing of a person by the AGV or forklift (full pallet ≤ 1.3 t) in the lanes; pallet falling from the forks; vehicle striking the conveyor end, curtain posts or cabinets</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Dedicated lanes at both conveyor ends (vehicle + pallet + 0.2 m each side), no tray upright, JB or cabinet in a lane; overhead trays ≥ 2.6 m over the lanes.
+2 AGV per ISO 3691-4 with personnel-detection scanners; forklift per ISO 3691-1; pick at station 6 only with the zone stopped (handshake); refill only in stacker load mode.
+3 Lane markings, pedestrian routes away from the lanes, training.</td><td>AGV safety functions (supplier) AGV 安全功能（供應商） · PLr d → PL d</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H9</td><td>Line machines · embossing (4), traction + cutter (5)</td><td>Drawing-in at the nip of the embossing rolls and the traction rolls; cutting by the flying knife; burns at the warm embossing roll</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Machines from the line supplier, CE-marked, with their own fixed guards (ISO 13857) and interlocked covers (guard locking on the knife, STO); nip guards at the roll entries; cooling conveyor between embossing and traction.
+2 Line E-stops on the machines stop the line and signal the cell; the cell E-stops do not stop the continuous line (sheets go to manual off-load, H10).
+3 Heat and nip warnings; roll change only under LOTO.</td><td>SF9 line machine guards (supplier) 產線機器防護（供應商） · PLr d → PL d</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H10</td><td>Manual off-load · run-out belt (cell stopped)</td><td>Operator taking sheets off the run-out belt while the cell is stopped: cuts at the sheet edges, hand struck by the next sheet arriving at 1.2 m/s, lifting 1500 × 1000 mm sheets (6 kg) from belt height</td><td class="c M">Moderate · Likely<br>MEDIUM</td><td class="pre">1 The line cannot stop, so every stop of the cell ends in a physical exit: run-out + infeed buffer (1 sheet each), then manual off-load onto the pallet beside the run-out belt, outside the hood; the belt zone under a held sheet is stopped, the next sheet holds one zone back; a pallet change costs 7–9 s and no sheet (the next pallet follows the full one).
+2 Lamp at the run-out belt when a sheet must be taken off.
+3 Cut-resistant gloves; two-hand grip on the 1.5 m sheet (ISO 11228-1: 6 kg well below the limit).</td><td>—</td><td class="c L">Moderate · Unlikely<br>LOW</td></tr>
+      <tr><td class="c">H11</td><td>Stacking · pallet quality and stack stability</td><td>Stack (≤ 200 sheets, 600 mm, ≤ 1.2 t) sliding off during conveying or vehicle transport; scratched decor faces (product damage)</td><td class="c M">Serious · Unlikely<br>MEDIUM</td><td class="pre">1 Sheets set 10 mm above the stack and stripped off (no sliding across the sheet below); decor face on decor face / back on back (every 2nd sheet flipped), top sheet back-up; slip sheet on the pallet deck; pallet centred at station 3 (stop + guides).
+2 Stack height limited by the sheets-per-pallet recipe; conveyor 0.3 m/s with soft start.
+3 Strapping / stretch-wrap at shipping (outside this scope).</td><td>—</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H12</td><td>Intervention · jam clearing, gripper / pick-table maintenance</td><td>Person inside the cell: robot or fork starting unexpectedly, stored energy in the clamp cylinders, sheet falling when the clamp opens, door opened while the robot still moves</td><td class="c H">Catastrophic · Likely<br>HIGH</td><td class="pre">1 Guard-locked door (right fence, 1.2 m): unlocks only after SafeMove Stand Still and stopped conveyors (SF4); pick table, buffer belt and stations 2–4 stop with the door; the line keeps running (H10).
+2 Manual mode T1 ≤ 250 mm/s with enabling device; pneumatic dump valve with clamp check valves (the sheet is held until released by hand); LOTO at the main disconnect; scanners prevent restart with a person inside (SF8).
+3 Procedures for jam clearing and gripper change; training.</td><td>SF4 guard locking 防護鎖; SF8 reset / restart prevention 復歸／防止重啟 · PLr d → PL e</td><td class="c M">Catastrophic · Remote<br>MEDIUM</td></tr>
+      <tr><td class="c">H13</td><td>Restart with a person inside the cell</td><td>Automatic restart after the door is closed while a second person is still in the cell (behind the robot base or the pick table)</td><td class="c H">Catastrophic · Likely<br>HIGH</td><td class="pre">1 Three OS32C laser scanners on the fence (protective field 4.0 m): coverage.py 100 % of the cell floor with one unit looking behind the robot base and the pick table.
+2 Reset only from outside at the door with a full view of the cell, refused while a field is occupied (SF8).
+3 Personal padlock on the door interlock during interventions.</td><td>SF8 reset / restart prevention 復歸／防止重啟 · PLr d → PL d</td><td class="c M">Catastrophic · Remote<br>MEDIUM</td></tr>
+      <tr><td class="c">H14</td><td>Emergency stop</td><td>No means to stop the cell quickly at the door, the stacker, the full-pallet end, the manual off-load or the west fence</td><td class="c H">Catastrophic · Unlikely<br>HIGH</td><td class="pre">1 Five E-stop stations (door, west fence, stacker, station 6, manual off-load) → stop cat. 0 / 1 of robot, pick table, buffer belt, pallet conveyor and stacker.
+2 E-stop does not stop the continuous line (line E-stops on machines 4 / 5 do); sheets then go to manual off-load.
+3 Periodic function test.</td><td>SF5 E-stop 緊急停止 · PLr d → PL e</td><td class="c M">Catastrophic · Remote<br>MEDIUM</td></tr>
+      <tr><td class="c">H15</td><td>Floor · walkways around the cell</td><td>Slipping / tripping near the manual off-load, the stacker and the vehicle lanes; sheet offcuts on the floor</td><td class="c L">Moderate · Unlikely<br>LOW</td><td class="pre">1 Epoxy floor, walkway and lane markings, no floor cables outside the cell (H17).
+2 —
+3 Housekeeping, offcut bin at the cutter.</td><td>—</td><td class="c N">Minor · Unlikely<br>NEGLIGIBLE</td></tr>
+      <tr><td class="c">H16</td><td>Cable routes · trays, ducts, floor bridges</td><td>Electrical / fire · cable insulation damaged — crushed by a vehicle or pallet, cut by moving equipment, hit by the robot, overheated in an overfilled tray → electric shock at exposed conductors, loss of a safety signal, fire</td><td class="c H">Serious · Likely<br>HIGH</td><td class="pre">1 Every cable between cabinets, junction boxes and robots runs on a perforated or ladder cable tray (IEC 61537) at ≥ 2.2 m, over traffic at the vehicle / load height + 0.2 m (AGV / forklift lanes at both pallet-conveyor ends 2.6 m clear height (mast 2.4 m)); robot cables on floor cable bridges only inside the guarded zone and never across a flow path or lane; sensor cordsets (≤ 10 m) in wiring ducts on the fence rail and inside the equipment frames — no cable through the air or across a conveyor, lane or doorway; tray fill ≤ 40 % (max 19 %).
+2 Robot arms, tools and carried parts keep ≥ 0.56 m from every tray, support, vertical tray and cabinet over the full cycle (verified in the digital layout); safety signals with cross-fault detection (ISO 13849-2); PE continuity and insulation test (IEC 60204-1 §18).
+3 Trays, bridges and cordsets in the inspection plan; damaged cables replaced, not repaired.</td><td>—</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H17</td><td>Electrical installations in walkways and lanes</td><td>Mechanical · tripping over a floor cable bridge; a person or vehicle striking a tray upright or junction-box post; a tray section falling after a vehicle strike or overload; a cabinet door that cannot open fully (blocked escape)</td><td class="c M">Serious · Unlikely<br>MEDIUM</td><td class="pre">1 Tray supports: floor-standing strut uprights with anchored base plates, cross-arms and knee braces every ≤ 2.0 m, spans ≤ 2.5 m (perforated tray) / ≤ 6 m (ladder-tray bridges over lanes, doors and machines); no upright, post or junction box inside a vehicle lane (lane = vehicle + load), door swing, cabinet service area or flow path, on a fence line or within 0.9 m of a robot base (23 supports placed and checked in the layout); floor cable bridges with chamfered yellow ramps, only inside the cells, never in a doorway or walkway.
+2 Service areas kept clear and marked on the floor.
+3 Uprights next to traffic marked yellow / black; tray load and anchoring checked at installation and in the inspection plan.</td><td>—</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+      <tr><td class="c">H18</td><td>Electrical cabinets · MCP, sub-cabinets, robot controllers (outside the fence)</td><td>Electrical · shock, arc flash at the cabinets (400 V)</td><td class="c M">Serious · Unlikely<br>MEDIUM</td><td class="pre">1 One main control panel (MCP: incoming supply, lockable main disconnect, line PLC + safety PLC, power distribution); every cabinet stands outside the guarded area (MCP main control panel and RC1 IRC5 controller east of the cell, SC1 line panel beside the cutter / embosser, SC2 pallet-conveyor / stacker remote I/O west of the cell); IEC 60204-1 / IEC 61439 enclosures IP54 with door-interlocked main switches; field devices on 24 V via 6 junction boxes, set outside the fence wherever the cordsets reach (serviceable without entering a zone).
+2 A clear service area in front of every cabinet door — depth ≥ max(1.0 m, door leaf + 0.5 m escape width), no fence, equipment, vehicle lane, door swing or other cabinet in it (IEC 60364-7-729; 4 / 4 clear in the layout); every cable between cabinets, junction boxes and robots on a supported tray (H16).
+3 Qualified personnel only (EN 50110-1); LOTO at the main disconnect; warning labels; arc-flash PPE per the site assessment.</td><td>—</td><td class="c L">Serious · Remote<br>LOW</td></tr>
+    </table>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 14px;">5 · Items HIGH after the first safeguarding pass — discussion and resolution</h2>
+      <table>
+        <tr><th>Item</th><th>Finding</th><th>Resolution adopted</th></tr>
+        <tr><td><b>H1</b></td><td>The first gripper design carried its own flip unit (servo + gearbox 300 mm under the flange): ≈ 38 kg with the centre of gravity ≈ 0.55 m from the flange — too heavy for the IRB 4600-40 wrist with the sheet.</td><td>Fork bolted straight to the A6 flange with the flange facing sideways along the tines; robot axis 6 is the flip axis (sheet plane on the A6 axis). ≈ 22 kg, no flip drive, shorter lever; wrist solution checked over the full cycle (A4 −88 → 1°, A5 −85 → −20°, A6 roll ±180°).</td></tr>
+        <tr><td><b>H5</b></td><td>Light curtains at the station 3 opening of the fence would stand 0.38 m from the fork working at the pallet: ISO 13855 requires 1730 mm (0.5 s stop) — HIGH risk of reaching the fork through a muted pallet opening.</td><td>Stations 2–4 enclosed in a fenced pallet tunnel (walls 0.2–0.4 m from the conveyor), curtains moved to the tunnel ends x −4.85 / 2.0 m: 2480 mm available ≥ 1890 mm even at 0.6 s. Tunnel, curtains and muting sensors are in the 3D layout.</td></tr>
+        <tr><td><b>H2</b></td><td>A flip with the fork tangential to the robot sweeps the 1.40 m fork disc into the forearm; a flip over the pick table or the pallet sweeps into equipment (only 0.53 m of axis height at 1.35 m carry height).</td><td>Flip point at (−1.5 / −0.3 m): fork radial (± 15°), footprint over free floor; interlocked by SF7, 0 flips outside the clear zone in the 1 h sweep. The fork is symmetric, so it never flips back.</td></tr>
+        <tr><td><b>H10</b></td><td>The extrusion line cannot stop: without a buffer every cell stop (door, E-stop, pallet change) ends in sheets pushed against a stopped table at the cutter. A sequential pallet change took 18 s and pushed sheets to manual off-load even in normal running.</td><td>Run-out + infeed buffer (zone-controlled, one sheet each) and a manual off-load position outside the hood as the physical exit; the empty pallet follows the full one (change 7–9 s). 1 h at 6 / min: 0 sheets off-loaded; robot capacity 7.3 / min (+22 %).</td></tr>
+        <tr><td><b>H1</b></td><td>Blended return and approach paths (needed for the 6 / min rate) brought the fork backbone 0.48 m to the robot axis and the tool 22–52 mm over the pick table.</td><td>Return via point turned 15° west (backbone ≥ 0.67 m from the axis) and table approach at flip axis + 0.26 m (wrist and crossbar ≥ 100 mm over the rollers); tines withdrawn past the pallet edge; all sweeps ≥ 0.11 m over equipment.</td></tr>
+        <tr><td><b>H17</b></td><td>The IRC5 → MCP route was not found although both cabinets sat on tray T1: the tray graph split its node at y = 0 into &quot;0.00&quot; and &quot;−0.00&quot; (rounded split points vs unrounded attach points) — an engine bug that could disconnect any cabinet or JB attached near a zero coordinate.</td><td>Engine fixed (node keys normalised, attach points use the split rounding); all 8 stations re-verified with 0 issues and unchanged clearances.</td></tr>
+        <tr><td><b>H17</b></td><td>JB1 stood inside the line keep-out and JB2 had no cable carrier within 0.6 m beside the run-out belt.</td><td>Keep-out split into pick table / belts and line machines; JB2 beside the run-out belt frame, north tray T5 at x −0.6 m, SC1 moved to x 0.0 m.</td></tr>
+      </table>
+      <div><b>Result:</b> No residual High. H1, H5, H12, H13 and H14 remain Medium (catastrophic severity, remote probability) — inherent to a robot cell and tolerable only with SF1–SF8 implemented, verified and documented. All other hazards are Low or Negligible. The defining findings — curtain distance at the pallet opening (resolved by the fenced pallet tunnel), the flip of a 1.40 m fork by robot axis 6 (flip point, radial, over free floor, interlocked), the line that cannot stop (buffers, manual off-load exit, following pallet change) and the clearances of the fast blended paths — are resolved as listed and mirrored in the 3D layout. Electrical plan (RevA): every cabinet outside the guarded area with a clear service area (4 / 4), all cables on supported trays, ducts and floor bridges, none across a flow path or lane; H16, H17, H18 added (cable damage, installations in walkways and lanes, cabinets) — Low after the measures; 2 findings of the plan resolved and mirrored in the 3D layout.</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 style="margin: 0; font-size: 14px;">6 · Safety functions summary (ISO 13849-1)</h2>
+      <table>
+        <tr><th>SF</th><th>Function</th><th>Input → logic → output</th><th>PLr</th><th>PL</th></tr>
+        <tr><td>SF1</td><td>Cell guard stop</td><td>door (guard locking) + scanners (3) + tunnel curtains (unmuted) → safety PLC → IRB 4600 SafeStop cat. 1; pick table, buffer belt, pallet conveyor 2–4 STO</td><td class="c">d</td><td class="c">e</td></tr>
+        <tr><td>SF2</td><td>Pallet tunnel curtains + muting</td><td>2 × F3SG-PG at the tunnel ends, 4 muting sensors (sequence, ≤ 12 s, pallet-conveyor zone moving) → safety PLC → SF1</td><td class="c">d</td><td class="c">e</td></tr>
+        <tr><td>SF3</td><td>Stacker loading curtain / load mode</td><td>F3SG-PG at the loading side → stacker STO; load mode from outside: forks at bottom + STO before the bypass</td><td class="c">d</td><td class="c">d</td></tr>
+        <tr><td>SF4</td><td>Guard locking of the cell door</td><td>D4SL-N unlocked only with SafeMove Stand Still + conveyors 2–4, pick table, buffer belt stopped</td><td class="c">d</td><td class="c">d</td></tr>
+        <tr><td>SF5</td><td>Emergency stop (cell)</td><td>5 E-stop stations → safety PLC → robot cat. 1, drives STO (the continuous line has its own E-stop circuit)</td><td class="c">d</td><td class="c">e</td></tr>
+        <tr><td>SF6</td><td>SafeMove zones and tool speed</td><td>Safe Zone (tool inside the cell, station 3 only through its opening), axis range A1 ±60°, Tool Speed Supervision 2500 / 250 mm/s</td><td class="c">d</td><td class="c">d</td></tr>
+        <tr><td>SF7</td><td>Flip enable</td><td>SafeMove zone &quot;flip point&quot; + clamp-closed sensors → A6 axis range widened from the carry range to the 180° roll</td><td class="c">c</td><td class="c">d</td></tr>
+        <tr><td>SF8</td><td>Reset / restart prevention</td><td>reset button outside the door with a view of the cell; refused while a scanner field is occupied</td><td class="c">d</td><td class="c">d</td></tr>
+        <tr><td>SF9</td><td>Line machine guards (supplier)</td><td>embossing / traction / cutter covers (guard locking) → machine STO + line stop signal to the cell</td><td class="c">d</td><td class="c">d</td></tr>
+      </table>
+      <h2 style="margin: 8px 0 0; font-size: 14px;">7 · Verification and validation before release</h2>
+      <div>Measure the robot stopping time / distance at 2500 mm/s with the fork and the heaviest sheet (cat. 0 and 1); recompute ISO 13855 for the tunnel curtains (1730 mm required at 0.5 s, 2480 mm available) and the stacker curtain · RobotLoad check of the fork (mass, CoG, inertia) against the IRB 4600-40/2.55 load diagram; axis-4/5/6 torques during the flip · SafeMove validation: Safe Zone (tool inside the cell, station 3 only through its opening), flip zone, A1 ±60°, Tool Speed Supervision 2500 / 250 mm/s, Stand Still for guard locking, brake test · Muting tests at both tunnel ends: muting only with the 4-sensor sequence while a pallet moves (≤ 12 s); a person walking behind a pallet trips the curtain; stacker load-mode bypass only with the stacker stopped · Scanner validation with a 70 mm test piece at every field edge, behind the robot base and the pick table (coverage.py 100 %); reset refused while a field is occupied · Gripper tests: clamp holds a 1500 mm sheet on air loss (check valves) through a full flip; no lift / flip without clamp-closed + sheet-present; stripper keeps the sheet in place during a 1500 mm/s withdrawal on a 200-sheet stack; decor faces free of scratches · Line tests at 6 / min: cell door opened 30 s and E-stop 40 s → sheets to the manual off-load only, no jam at the cutter; pallet change every 10 sheets without sheet loss; stacker refill and AGV / forklift shipping handshakes · ISO 13857 check of the infeed hood (80 mm slot, 1780 mm to the fork), the tunnel walls and the stacker guards; PL verification of SF1–SF8 per ISO 13849-2 (SISTEMA) · Electrical layout check in the digital layout (engine/tools/verify_electrical.js): 0 issues — every junction box, cabinet and robot on a routed tray, junction-box ports, cordsets ≤ 10 m on carriers, fill ≤ 40 %, service areas clear, spans ≤ 2.5 m / 6 m, no floor bridge or cordset across a flow path or lane; robot-to-installation clearance ≥ 0.3 m (measured 0.56 m) · On site: IEC 60204-1 §18 tests (PE continuity, insulation resistance, voltage test, residual voltage); service areas free and marked; tray supports anchored and load-checked; tray clearance over every lane measured with the real vehicle and load</div>
+    </div>
+  </div>
+  <div style="border-top: 1px solid #c9ced3; padding-top: 8px; color: #6b7780; font-size: 11px;">Prepared from the digital layout of this canvas (Main artboard). Positions in metres from the robot base. Values in [ ] are to be filled from supplier documentation. This assessment does not replace the integrator&#x27;s technical file.</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1200,"height":2600}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

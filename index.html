@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio</title>
+<meta name="description" content="Automation and robot cell engineering projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .intro { padding-block: 5rem 3rem; display: grid; gap: 1.25rem; max-width: 50rem; }
+  .intro h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; font-stretch: 112%; letter-spacing: -0.02em; }
+  .intro p { font-size: 1.2rem; color: var(--mute); }
+  .projects { display: grid; gap: 2.5rem; border-top: 2px solid var(--ink); padding-top: 2.5rem; }
+  .card { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 2rem; align-items: center; text-decoration: none; color: var(--ink); }
+  .card .shot { background: var(--shot-bg); border-radius: 6px; overflow: hidden; }
+  .card .shot img { width: 100%; height: auto; transition: transform .4s ease; }
+  .card:hover .shot img { transform: scale(1.02); }
+  .card .body { display: grid; gap: 0.8rem; }
+  .card h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; }
+  .card:hover h2 { color: var(--accent); }
+  .card p { color: var(--mute); }
+  .card .more { font: 600 0.95rem var(--font-display); color: var(--accent); }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font: 500 0.78rem var(--font-mono); padding: 0.25rem 0.55rem; border: 1px solid var(--rule); border-radius: 3px; color: var(--mute); }
+  @media (max-width: 52rem) { .card { grid-template-columns: 1fr; gap: 1rem; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="intro">
+    <p class="eyebrow">Automation engineering</p>
+    <h1>Robot cells, from layout to safety sign-off</h1>
+    <p>Cell concepts, motion and cycle simulation, electrical plans and ISO 12100 risk assessments for industrial production lines.</p>
+  </div>
+
+  <div class="projects">
+    <a class="card" href="projects/pp-stacking/index.html">
+      <div class="shot"><img src="projects/pp-stacking/img/robot-closeup.jpg" width="1600" height="900" alt="ABB robot with a fork gripper carrying a flooring sheet inside a fenced cell."></div>
+      <div class="body">
+        <p class="eyebrow">2026 · Robot cell · Simulation · Safety</p>
+        <h2>PP Flooring Stacking Cell</h2>
+        <p>An ABB IRB 4600 flips every second sheet with axis 6 and stacks them face to face at 6 sheets per minute, behind a line that never stops. Live 3D simulation and full ISO 12100 risk assessment.</p>
+        <div class="tags"><span class="tag">IRB 4600</span><span class="tag">SafeMove</span><span class="tag">Three.js</span><span class="tag">ISO 12100</span></div>
+        <span class="more">View case study →</span>
+      </div>
+    </a>
+  </div>
+</main>
+<footer>
+  <div class="wrap"><span>Portfolio · 2026</span><span>More projects coming soon</span></div>
+</footer>
+</body>
+</html>

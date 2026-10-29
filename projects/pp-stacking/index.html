@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PP Flooring Stacking Cell</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="ABB IRB 4600 robot cell that flips and stacks PP flooring sheets face to face at line speed: cell layout, live 3D simulation, and an ISO 12100 risk assessment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  /* hero */
+  .hero { padding-block: 3.5rem 2.5rem; display: grid; gap: 1.5rem; }
+  .hero h1 { font-size: clamp(2.4rem, 6.5vw, 4.6rem); font-weight: 800; font-stretch: 112%; letter-spacing: -0.02em; }
+  .hero h1 span { color: var(--accent); }
+  .hero .lede { font-size: clamp(1.1rem, 1.8vw, 1.3rem); max-width: 44rem; color: var(--mute); }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font: 500 0.78rem var(--font-mono); padding: 0.25rem 0.55rem; border: 1px solid var(--rule); border-radius: 3px; color: var(--mute); }
+
+  .shot { background: var(--shot-bg); border-radius: 6px; overflow: hidden; }
+  .shot img { width: 100%; height: auto; }
+  figure { margin: 0; display: grid; gap: 0.6rem; }
+  figcaption { font-size: 0.9rem; color: var(--mute); }
+  figcaption b { color: var(--ink); font-weight: 600; }
+
+  /* spec strip */
+  .spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); margin-top: 2.5rem; }
+  .spec div { padding: 1rem 1rem 1.1rem 0; display: grid; gap: 0.25rem; align-content: start; }
+  .spec div + div { padding-left: 1rem; border-left: 1px solid var(--rule); }
+  .spec b { font: 700 clamp(1.6rem, 3vw, 2.1rem)/1 var(--font-display); font-stretch: 105%; font-variant-numeric: tabular-nums; }
+  .spec b small { font-size: 0.55em; font-weight: 600; color: var(--mute); margin-left: 0.15em; }
+  .spec span { font-size: 0.85rem; color: var(--mute); line-height: 1.35; }
+  @media (max-width: 40rem) {
+    .spec { grid-template-columns: 1fr 1fr; }
+    .spec div, .spec div + div { padding: 0.9rem 0.75rem 0.9rem 0; border-left: 0; border-top: 1px solid var(--rule); }
+    .spec div:nth-child(even) { padding-left: 0.75rem; border-left: 1px solid var(--rule); }
+  }
+
+  /* overview */
+  .two { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+  @media (max-width: 52rem) { .two { grid-template-columns: 1fr; gap: 2rem; } }
+  .facts { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .facts div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
+  .facts dt { color: var(--mute); font: 500 0.78rem/1.6 var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+  .facts dd { margin: 0; }
+
+  /* process */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; counter-reset: s; }
+  .steps li { counter-increment: s; padding: 0 1rem 0 0; display: grid; gap: 0.5rem; align-content: start; position: relative; }
+  .steps li::before { content: counter(s); font: 700 0.85rem var(--font-mono); width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); position: relative; z-index: 1; }
+  .steps li::after { content: ""; position: absolute; top: 1rem; left: 2rem; right: 0; height: 2px; background: var(--rule); }
+  .steps li:last-child::after { display: none; }
+  .steps h3 { font-size: 1rem; font-weight: 700; }
+  .steps p { font-size: 0.92rem; color: var(--mute); }
+  @media (max-width: 52rem) {
+    .steps { grid-template-columns: 1fr; gap: 1.25rem; }
+    .steps li { grid-template-columns: 2rem minmax(0, 1fr); column-gap: 1rem; padding: 0; }
+    .steps li::before { grid-row: span 2; }
+    .steps li::after { top: 2rem; bottom: -1.25rem; left: calc(1rem - 1px); right: auto; width: 2px; height: auto; }
+  }
+
+  /* live demo */
+  .demo { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: var(--shot-bg); border-radius: 6px; overflow: hidden; }
+  .demo img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .demo .cta { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.8rem; text-align: center; padding: 1rem; color: #e8ecef; }
+  .demo .cta p { font-size: 0.9rem; color: #c3cad1; max-width: 30rem; }
+  .demo iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .demo-note { margin-top: 0.75rem; font-size: 0.9rem; color: var(--mute); }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.5rem 1.25rem; }
+  .gallery figure:nth-child(1), .gallery figure:nth-child(2) { grid-column: span 3; }
+  .gallery figure { grid-column: span 2; }
+  @media (max-width: 52rem) { .gallery { grid-template-columns: 1fr; } .gallery figure, .gallery figure:nth-child(1), .gallery figure:nth-child(2) { grid-column: auto; } }
+
+  /* design decisions */
+  .decisions { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+  .dec { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--rule); }
+  .dec .id { display: grid; gap: 0.35rem; align-content: start; }
+  .dec .id b { font: 700 1.1rem var(--font-mono); color: var(--accent); }
+  .dec h3 { font-size: 1.15rem; font-weight: 700; grid-column: 2 / -1; }
+  .dec .col { display: grid; gap: 0.35rem; font-size: 0.95rem; }
+  .dec .col .eyebrow { color: var(--mute); }
+  .dec .col.fix .eyebrow { color: var(--ok); }
+  .dec .delta { font: 600 0.82rem var(--font-mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); padding: 0.2rem 0.45rem; border-radius: 3px; justify-self: start; margin-top: 0.3rem; }
+  .dec-body { grid-column: 2 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; }
+  @media (max-width: 52rem) {
+    .dec { grid-template-columns: 1fr; gap: 0.75rem; }
+    .dec h3, .dec-body { grid-column: auto; }
+    .dec .id { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 0.75rem; }
+    .dec-body { grid-template-columns: 1fr; gap: 1rem; }
+  }
+  .verdict { margin-top: 1.5rem; padding: 1.1rem 1.25rem; background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--ok); border-radius: 4px; max-width: 46rem; }
+
+  /* safety table */
+  .tbl { overflow-x: auto; border-top: 2px solid var(--ink); }
+  table { border-collapse: collapse; width: 100%; min-width: 44rem; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--mute); }
+  td:first-child { font: 700 0.85rem var(--font-mono); color: var(--accent); white-space: nowrap; }
+  td.pl { font-family: var(--font-mono); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; font: 600 0.75rem var(--font-mono); padding: 0.1rem 0.45rem; border-radius: 3px; border: 1px solid currentColor; }
+  .pill.d { color: var(--warn); } .pill.e { color: var(--ok); } .pill.c { color: var(--mute); }
+
+  /* stack + docs */
+  .stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2rem; }
+  .stack h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .stack ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; font-size: 0.95rem; }
+  .stack li span { color: var(--mute); }
+  .docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .doc { display: grid; gap: 0.4rem; padding: 1.1rem 1.2rem; border: 1px solid var(--rule); border-radius: 4px; text-decoration: none; color: var(--ink); background: var(--surface); }
+  .doc:hover { border-color: var(--accent); }
+  .doc b { font: 700 1.05rem var(--font-display); }
+  .doc span { font-size: 0.9rem; color: var(--mute); }
+  .doc .eyebrow { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a href="../../index.html">← Portfolio</a>
+    <nav aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#simulation">Simulation</a>
+      <a href="#decisions">Design decisions</a>
+      <a href="#safety">Safety</a>
+      <a href="#documents">Documents</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <p class="eyebrow">Robot cell design · 3D simulation · Machine safety</p>
+    <h1>PP Flooring <span>Stacking Cell</span></h1>
+    <p class="lede">An <strong>ABB IRB 4600</strong> takes 3 mm polypropylene flooring sheets straight off a line that never stops, <strong>flips every second sheet 180° with axis 6</strong> so decor faces meet, and stacks them on a six-station pallet conveyor at <strong>6 sheets per minute</strong>.</p>
+    <div class="btns">
+      <a class="btn primary" href="demo.html" target="_blank" rel="noopener">Run the live 3D simulation ↗</a>
+      <a class="btn" href="#decisions">See the design decisions</a>
+    </div>
+    <div class="tags" aria-label="Topics">
+      <span class="tag">ABB IRB 4600-40/2.55</span><span class="tag">SafeMove</span><span class="tag">Three.js</span><span class="tag">ISO 12100</span><span class="tag">ISO 13849-1</span><span class="tag">ISO 13855</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <figure>
+      <div class="shot"><img src="img/cell-iso.jpg" width="1600" height="900" alt="Isometric 3D view of the stacking cell: yellow safety fence, white ABB robot with fork gripper at the centre, pick table, pallet conveyor along the front, electrical cabinets outside the fence."></div>
+      <figcaption><b>The full cell</b> in the browser simulation: line machines (top right), pick table and robot inside the H2000 fence, pallet tunnel along the front, cabinets outside.</figcaption>
+    </figure>
+
+    <div class="spec" role="list">
+      <div role="listitem"><b>6<small>/min</small></b><span>Line output the cell has to keep up with</span></div>
+      <div role="listitem"><b>7.3<small>/min</small></b><span>Robot capacity, 22 % headroom</span></div>
+      <div role="listitem"><b class="mono">4.4–5.7<small>s</small></b><span>Measured robot cycle</span></div>
+      <div role="listitem"><b>22<small>kg</small></b><span>Fork gripper, down from a 38 kg first design</span></div>
+      <div role="listitem"><b>18 · 9</b><span>Hazards assessed · safety functions</span></div>
+      <div role="listitem"><b>0</b><span>High risks remaining after design changes</span></div>
+    </div>
+  </div>
+
+  <section id="overview">
+    <div class="wrap two">
+      <div class="prose">
+        <p class="eyebrow">Overview</p>
+        <h2 style="font-size:clamp(1.6rem,3.2vw,2.3rem)">A line that cannot stop, and sheets that must be flipped</h2>
+        <p>Processes 4 to 6 of a PP flooring line: a 2-roller embosser and a flying cutter produce sheets 1000 mm wide and 1000, 1300 or 1500 mm long. The extrusion upstream runs continuously, so every stop in the stacking cell pushes sheets back against the cutter.</p>
+        <p>The sheets have to be stacked decor face to decor face, so every second one is turned over. The cell does that with the robot itself: a fork gripper bolted directly to the A6 flange runs under the sheet on the pick table, clamps it, and axis 6 rolls it 180° on the way to the pallet.</p>
+        <p>I built the cell as an interactive 3D model with real robot kinematics, used it to measure cycle times and clearances, and wrote the risk assessment against the same layout. Each finding changed the model, and the model is what the assessment describes.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Robot</dt><dd>ABB IRB 4600-40/2.55, kinematics and joint limits from the RobotStudio PIM.xml</dd></div>
+        <div><dt>Product</dt><dd>PP sheets 1000 × 1000 / 1300 / 1500 × 3 mm, 3.9–5.9 kg</dd></div>
+        <div><dt>Gripper</dt><dd>Fork, 1400 mm crossbar, 4 fixed tines, 4 pneumatic clamps, stripper bar</dd></div>
+        <div><dt>Pallets</dt><dd>1600 × 1100, 200 sheets each (2–400), ≤ 1.2 t</dd></div>
+        <div><dt>Conveyor</dt><dd>6 stations: stacker · empty · stacking · 3 × full-pallet buffer</dd></div>
+        <div><dt>Shipping</dt><dd>AGV or forklift from station 6</dd></div>
+        <div><dt>My role</dt><dd>Cell concept and layout, robot path and cycle simulation, electrical plan, risk assessment</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Process sequence</p>
+        <h2>One sheet, start to pallet</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Emboss and cut</h3><p>2-roller embossing (4), traction and flying cutter (5) deliver 6 sheets/min.</p></li>
+        <li><h3>Buffer and infeed</h3><p>Run-out and infeed buffer belts feed the sheet into the open fork on the pick table.</p></li>
+        <li><h3>Clamp and flip</h3><p>The robot clamps and lifts. Axis 6 flips every second sheet 180°, face to face.</p></li>
+        <li><h3>Stack</h3><p>Set down 10 mm above the stack at station 3. The stripper holds the sheet while the tines slide out.</p></li>
+        <li><h3>Index and ship</h3><p>Full pallet moves to the 4–6 buffer, the stacker feeds an empty one, AGV or forklift ships from 6.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="simulation">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Live simulation</p>
+        <h2>Run the cell in your browser</h2>
+        <p>Three.js, no install. Change sheet size, line rate, robot speed and pallet height, open the cell door or press E-stop, and watch the interlocks, scanner fields and cable routes respond. English and 繁體中文.</p>
+      </div>
+      <div class="demo" id="demo">
+        <img src="img/simulation-ui.jpg" alt="Simulation interface with process steps on the left, live metrics on the right and controls along the bottom." width="1600" height="900">
+        <div class="cta">
+          <button class="btn primary" id="loadDemo" type="button">▶ Load simulation here (10 MB)</button>
+          <p>Drag to orbit · right-drag to pan · wheel to zoom</p>
+        </div>
+      </div>
+      <p class="demo-note">Works best on a desktop. <a href="demo.html" target="_blank" rel="noopener">Open full screen ↗</a></p>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Views</p>
+        <h2>Inside the cell</h2>
+      </div>
+      <div class="gallery">
+        <figure>
+          <div class="shot"><img src="img/robot-closeup.jpg" loading="lazy" width="1600" height="900" alt="Close-up of the robot carrying a sheet on the fork gripper between the pick table and the pallet."></div>
+          <figcaption><b>Robot view.</b> Fork on the A6 flange, flange facing along the tines, so axis 6 is the flip axis.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/pick-table.jpg" loading="lazy" width="1600" height="900" alt="Pick table with roller conveyor and fork slots, robot reaching in from the side."></div>
+          <figcaption><b>Pick table.</b> Rollers with fork slots and a servo end stop; the sheet runs into the open fork.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/electrical-overlay.jpg" loading="lazy" width="1600" height="900" alt="Isometric view with cable trays, junction boxes and cabinets highlighted."></div>
+          <figcaption><b>Electrical plan.</b> Cabinets, junction boxes and supported cable routes, with tray fill checked at ≤ 40 %.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/layout-top.jpg" loading="lazy" width="1600" height="900" alt="Top-down plan of the cell and the pallet conveyor."></div>
+          <figcaption><b>Plan view.</b> Fence, pallet tunnel, door and AGV / forklift lanes at both conveyor ends.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/line-view.jpg" loading="lazy" width="1600" height="900" alt="View along the line from the embossing unit to the stacking cell."></div>
+          <figcaption><b>Line view.</b> Embosser and flying cutter feeding the run-out and infeed buffer.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="decisions">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Design decisions</p>
+        <h2>What the risk assessment changed</h2>
+        <p>Every item rated High after the first safeguarding pass, what the problem was, and how the design was changed to remove it. IDs refer to the hazard list in the assessment.</p>
+      </div>
+      <div class="decisions">
+        <article class="dec">
+          <div class="id"><b>H1</b><span class="eyebrow">Gripper</span></div>
+          <h3>Let the robot do the flipping</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow">Problem</span><p>The first gripper carried its own flip unit, a servo and gearbox under the flange: about 38 kg with the centre of gravity 0.55 m out. Too heavy for the IRB 4600-40 wrist with a sheet on it.</p></div>
+            <div class="col fix"><span class="eyebrow">Resolution</span><p>Fork bolted straight to the A6 flange, flange facing along the tines, so axis 6 is the flip axis. No flip drive, shorter lever. Wrist checked over the full cycle.</p><span class="delta">38 kg → 22 kg</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H5</b><span class="eyebrow">Guarding</span></div>
+          <h3>Move the light curtains out to a pallet tunnel</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow">Problem</span><p>Curtains at the station 3 fence opening would stand 0.38 m from the fork. ISO 13855 needs 1730 mm at a 0.5 s stopping time, so a person could reach the fork through the muted opening.</p></div>
+            <div class="col fix"><span class="eyebrow">Resolution</span><p>Stations 2–4 enclosed in a fenced tunnel with the curtains at its ends. Enough distance even if the real stopping time turns out longer.</p><span class="delta">2480 mm available ≥ 1890 mm at 0.6 s</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H2</b><span class="eyebrow">Motion</span></div>
+          <h3>A fixed, interlocked flip point</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow">Problem</span><p>A 1.40 m fork rolling 180° sweeps a large disc. Flipped tangentially it hits the forearm; flipped over the table or pallet it hits equipment.</p></div>
+            <div class="col fix"><span class="eyebrow">Resolution</span><p>Flip only at one point over free floor, fork radial within ±15°, enabled by a SafeMove zone and clamp-closed sensors (SF7).</p><span class="delta">0 flips outside the zone in a 1 h run</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H10</b><span class="eyebrow">Throughput</span></div>
+          <h3>Buffers for a line that cannot stop</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow">Problem</span><p>A sequential pallet change took 18 s, long enough to push sheets to manual off-load even in normal running. Any door opening or E-stop meant sheets piling against the cutter.</p></div>
+            <div class="col fix"><span class="eyebrow">Resolution</span><p>Run-out and infeed buffer belts, a manual off-load exit outside the hood, and the empty pallet following the full one.</p><span class="delta">Pallet change 18 s → 7–9 s · 0 sheets off-loaded in 1 h</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H1</b><span class="eyebrow">Paths</span></div>
+          <h3>Clearances on fast blended paths</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow">Problem</span><p>Blending the return and approach paths to reach 6/min brought the fork backbone 0.48 m from the robot axis and the tool 22–52 mm over the pick table.</p></div>
+            <div class="col fix"><span class="eyebrow">Resolution</span><p>Return via point turned 15°, table approach raised 0.26 m above the flip axis, tines withdrawn past the pallet edge.</p><span class="delta">All sweeps ≥ 0.11 m over equipment</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H17</b><span class="eyebrow">Electrical</span></div>
+          <h3>A routing bug found by the cable check</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow">Problem</span><p>The route from the robot controller to the main panel was missing although both sat on tray T1. The tray graph split a node at y = 0 into "0.00" and "−0.00".</p></div>
+            <div class="col fix"><span class="eyebrow">Resolution</span><p>Node keys normalised in the routing engine, then all 8 stations re-verified. JB1 and JB2 moved out of the line keep-out next to a cable carrier.</p><span class="delta">8 / 8 stations, 0 issues</span></div>
+          </div>
+        </article>
+      </div>
+      <p class="verdict"><b>Result:</b> no residual High risk. Five hazards stay Medium (catastrophic severity, remote probability), which is inherent to a robot cell and tolerable with safety functions SF1–SF8 implemented and validated. Everything else is Low or Negligible.</p>
+    </div>
+  </section>
+
+  <section id="safety">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">ISO 13849-1</p>
+        <h2>Safety functions</h2>
+        <p>Required performance level (PLr) from the risk graph, and the level the chosen architecture achieves.</p>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>SF</th><th>Function</th><th>Input → logic → output</th><th>PLr</th><th>PL</th></tr></thead>
+          <tbody>
+            <tr><td>SF1</td><td>Cell guard stop</td><td>Door guard locking, 3 laser scanners, tunnel curtains → safety PLC → robot SafeStop cat. 1, conveyors STO</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill e">e</span></td></tr>
+            <tr><td>SF2</td><td>Pallet tunnel curtains and muting</td><td>2 × F3SG-PG at the tunnel ends, 4 muting sensors (sequence, ≤ 12 s) → SF1</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill e">e</span></td></tr>
+            <tr><td>SF3</td><td>Stacker loading curtain</td><td>F3SG-PG at the loading side → stacker STO; load mode from outside</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF4</td><td>Guard locking, cell door</td><td>D4SL-N unlocks only with SafeMove Stand Still and conveyors stopped</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF5</td><td>Emergency stop</td><td>5 E-stop stations → safety PLC → robot cat. 1, drives STO</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill e">e</span></td></tr>
+            <tr><td>SF6</td><td>SafeMove zones and tool speed</td><td>Tool inside the cell, A1 ±60°, Tool Speed Supervision 2500 / 250 mm/s</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF7</td><td>Flip enable</td><td>SafeMove flip-point zone + clamp-closed sensors → A6 range widened to 180°</td><td class="pl"><span class="pill c">c</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF8</td><td>Reset and restart prevention</td><td>Reset outside the door with a view of the cell; refused while a scanner field is occupied</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF9</td><td>Line machine guards</td><td>Supplier covers with guard locking → machine STO + line stop signal to the cell</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Tools and standards</p>
+        <h2>What it was built with</h2>
+      </div>
+      <div class="stack">
+        <div><h3>Robot and controls</h3><ul><li>ABB IRB 4600-40/2.55 <span>· IRC5</span></li><li>RobotStudio <span>· PIM.xml kinematics</span></li><li>SafeMove <span>· zones, tool speed, stand still</span></li><li>Safety PLC, Type 4 curtains, Type 3 scanners</li></ul></div>
+        <div><h3>Simulation</h3><ul><li>Three.js <span>· WebGL, single HTML file</span></li><li>Cycle, interlock and buffer model</li><li>Cable tray graph and fill check</li><li>EN / 繁體中文 interface</li></ul></div>
+        <div><h3>Safety standards</h3><ul><li>ISO 12100 <span>· risk assessment</span></li><li>ISO 13849-1/-2 <span>· PL and validation</span></li><li>ISO 10218-1/-2 <span>· robot cells</span></li><li>ISO 13855, 13857, 14119, 14120</li><li>IEC 60204-1, IEC 61496, EN 619</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="documents">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Documents</p>
+        <h2>Deliverables</h2>
+      </div>
+      <div class="docs">
+        <a class="doc" href="demo.html" target="_blank" rel="noopener"><span class="eyebrow">Interactive</span><b>3D cell simulation ↗</b><span>Full-screen Three.js model, 10 MB</span></a>
+        <a class="doc" href="docs/risk-assessment-en.html" target="_blank" rel="noopener"><span class="eyebrow">RA-PP-STACKING-01 · RevA</span><b>Risk assessment (English) ↗</b><span>ISO 12100, 18 hazards, 9 safety functions</span></a>
+        <a class="doc" href="docs/risk-assessment-zh.html" target="_blank" rel="noopener"><span class="eyebrow">RA-PP-STACKING-01 · RevA</span><b>風險評估（繁體中文）↗</b><span>ISO 12100 風險評估報告</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>PP Flooring Stacking Cell · 2026</span>
+    <a href="../../index.html">← All projects</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('loadDemo').addEventListener('click', function () {
+    var box = document.getElementById('demo');
+    var f = document.createElement('iframe');
+    f.src = 'demo.html';
+    f.title = 'PP flooring stacking cell, live 3D simulation';
+    f.allow = 'fullscreen';
+    box.replaceChildren(f);
+  });
+</script>
+</body>
+</html>
