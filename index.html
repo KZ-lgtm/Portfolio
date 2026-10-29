@@ -7,7 +7,7 @@
 <meta name="description" content="Automation and robot cell engineering projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&family=Noto+Sans+TC:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <style>
   .intro { padding-block: 5rem 3rem; display: grid; gap: 1.25rem; max-width: 50rem; }
@@ -29,28 +29,53 @@
 </style>
 </head>
 <body>
+<header class="bar">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="brand">Portfolio</span>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="zh" aria-pressed="false" lang="zh-Hant">繁中</button>
+    </div>
+  </div>
+</header>
 <main class="wrap">
   <div class="intro">
-    <p class="eyebrow">Automation engineering</p>
-    <h1>Robot cells, from layout to safety sign-off</h1>
-    <p>Cell concepts, motion and cycle simulation, electrical plans and ISO 12100 risk assessments for industrial production lines.</p>
+    <p class="eyebrow" data-i18n="i.eyebrow">Automation engineering</p>
+    <h1 data-i18n="i.h1">Robot cells, from layout to safety sign-off</h1>
+    <p data-i18n="i.p">Cell concepts, motion and cycle simulation, electrical plans and ISO 12100 risk assessments for industrial production lines.</p>
   </div>
 
   <div class="projects">
     <a class="card" href="projects/pp-stacking/index.html">
-      <div class="shot"><img src="projects/pp-stacking/img/robot-closeup.jpg" width="1600" height="900" alt="ABB robot with a fork gripper carrying a flooring sheet inside a fenced cell."></div>
+      <div class="shot"><img src="projects/pp-stacking/img/robot-closeup.jpg" width="1600" height="900" data-i18n-alt="c1" alt="ABB robot with a fork gripper carrying a flooring sheet inside a fenced cell."></div>
       <div class="body">
-        <p class="eyebrow">2026 · Robot cell · Simulation · Safety</p>
-        <h2>PP Flooring Stacking Cell</h2>
-        <p>An ABB IRB 4600 flips every second sheet with axis 6 and stacks them face to face at 6 sheets per minute, behind a line that never stops. Live 3D simulation and full ISO 12100 risk assessment.</p>
+        <p class="eyebrow" data-i18n="c1.e">2026 · Robot cell · Simulation · Safety</p>
+        <h2 data-i18n="c1.h">PP Flooring Stacking Cell</h2>
+        <p data-i18n="c1.p">An ABB IRB 4600 flips every second sheet with axis 6 and stacks them face to face at 6 sheets per minute, behind a line that never stops. Live 3D simulation and full ISO 12100 risk assessment.</p>
         <div class="tags"><span class="tag">IRB 4600</span><span class="tag">SafeMove</span><span class="tag">Three.js</span><span class="tag">ISO 12100</span></div>
-        <span class="more">View case study →</span>
+        <span class="more" data-i18n="c1.more">View case study →</span>
       </div>
     </a>
   </div>
 </main>
 <footer>
-  <div class="wrap"><span>Portfolio · 2026</span><span>More projects coming soon</span></div>
+  <div class="wrap"><span data-i18n="foot">Portfolio · 2026</span><span data-i18n="foot.more">More projects coming soon</span></div>
 </footer>
+<script src="assets/i18n.js"></script>
+<script>
+  initI18n({
+    _title: '作品集',
+    'brand': '作品集',
+    'i.eyebrow': '自動化工程',
+    'i.h1': '機器人工作站，從佈局到安全驗收',
+    'i.p': '為工業產線進行工作站概念設計、運動與週期模擬、電氣規劃，以及 ISO 12100 風險評估。',
+    'alt:c1': '圍籬工作站內，裝有叉具的 ABB 機器人正在搬運一片地板。',
+    'c1.e': '2026 · 機器人工作站 · 模擬 · 安全',
+    'c1.h': 'PP 地板堆疊工作站',
+    'c1.p': '一台 ABB IRB 4600 以第 6 軸將每第 2 片翻面，在永不停機的產線後方以每分鐘 6 片的速度面對面堆疊。含即時 3D 模擬與完整的 ISO 12100 風險評估。',
+    'c1.more': '查看案例 →',
+    'foot': '作品集 · 2026', 'foot.more': '更多作品即將推出'
+  });
+</script>
 </body>
 </html>

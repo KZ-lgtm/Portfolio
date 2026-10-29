@@ -341,7 +341,7 @@ const ZH = {
   'Timeline': '時間軸', 'Seeking…': '跳轉中…', 'Go to phase {n}: {name}': '跳至階段 {n}：{name}', 'Project time': '專案時間',
   'not simulated in this mode': '此模式不模擬',
 };
-RC.lang = (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en';
+RC.lang = /^#(zh|en)$/.test(location.hash) ? location.hash.slice(1) : (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en';
 const t = (key, args) => {
   if (Array.isArray(key)) { args = key[1]; key = key[0]; }
   let str = RC.lang === 'zh' ? (ZH[key] !== undefined ? ZH[key] : key) : key;
