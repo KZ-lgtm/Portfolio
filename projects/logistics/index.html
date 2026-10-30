@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Goods-to-Robot Order Fulfilment</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Five ABB robots around a cylinder shelf pick, scan and sort warehouse orders: cell layout, live 3D simulation, throughput verification and an ISO 12100 risk assessment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&family=Noto+Sans+TC:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  /* hero */
+  .hero { padding-block: 3.5rem 2.5rem; display: grid; gap: 1.5rem; }
+  .hero h1 { font-size: clamp(2.4rem, 6.5vw, 4.6rem); font-weight: 800; font-stretch: 112%; letter-spacing: -0.02em; }
+  .hero h1 span { color: var(--accent); }
+  .hero .lede { font-size: clamp(1.1rem, 1.8vw, 1.3rem); max-width: 44rem; color: var(--mute); }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font: 500 0.78rem var(--font-mono); padding: 0.25rem 0.55rem; border: 1px solid var(--rule); border-radius: 3px; color: var(--mute); }
+
+  .shot { background: var(--shot-bg); border-radius: 6px; overflow: hidden; }
+  .shot img { width: 100%; height: auto; }
+  figure { margin: 0; display: grid; gap: 0.6rem; }
+  figcaption { font-size: 0.9rem; color: var(--mute); }
+  figcaption b { color: var(--ink); font-weight: 600; }
+
+  /* spec strip */
+  .spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); margin-top: 2.5rem; }
+  .spec div { padding: 1rem 1rem 1.1rem 0; display: grid; gap: 0.25rem; align-content: start; }
+  .spec div + div { padding-left: 1rem; border-left: 1px solid var(--rule); }
+  .spec b { font: 700 clamp(1.6rem, 3vw, 2.1rem)/1 var(--font-display); font-stretch: 105%; font-variant-numeric: tabular-nums; }
+  .spec b small { font-size: 0.55em; font-weight: 600; color: var(--mute); margin-left: 0.15em; }
+  .spec span { font-size: 0.85rem; color: var(--mute); line-height: 1.35; }
+  @media (max-width: 40rem) {
+    .spec { grid-template-columns: 1fr 1fr; }
+    .spec div, .spec div + div { padding: 0.9rem 0.75rem 0.9rem 0; border-left: 0; border-top: 1px solid var(--rule); }
+    .spec div:nth-child(even) { padding-left: 0.75rem; border-left: 1px solid var(--rule); }
+  }
+
+  /* overview */
+  .two { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+  @media (max-width: 52rem) { .two { grid-template-columns: 1fr; gap: 2rem; } }
+  .facts { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .facts div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
+  .facts dt { color: var(--mute); font: 500 0.78rem/1.6 var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+  .facts dd { margin: 0; }
+
+  /* process */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; counter-reset: s; }
+  .steps li { counter-increment: s; padding: 0 1rem 0 0; display: grid; gap: 0.5rem; align-content: start; position: relative; }
+  .steps li::before { content: counter(s); font: 700 0.85rem var(--font-mono); width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); position: relative; z-index: 1; }
+  .steps li::after { content: ""; position: absolute; top: 1rem; left: 2rem; right: 0; height: 2px; background: var(--rule); }
+  .steps li:last-child::after { display: none; }
+  .steps h3 { font-size: 1rem; font-weight: 700; }
+  .steps p { font-size: 0.92rem; color: var(--mute); }
+  @media (max-width: 52rem) {
+    .steps { grid-template-columns: 1fr; gap: 1.25rem; }
+    .steps li { grid-template-columns: 2rem minmax(0, 1fr); column-gap: 1rem; padding: 0; }
+    .steps li::before { grid-row: span 2; }
+    .steps li::after { top: 2rem; bottom: -1.25rem; left: calc(1rem - 1px); right: auto; width: 2px; height: auto; }
+  }
+
+  /* live demo */
+  .demo { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: var(--shot-bg); border-radius: 6px; overflow: hidden; }
+  .demo img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .demo .cta { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.8rem; text-align: center; padding: 1rem; color: #e8ecef; }
+  .demo .cta p { font-size: 0.9rem; color: #c3cad1; max-width: 30rem; }
+  .demo iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .demo-note { margin-top: 0.75rem; font-size: 0.9rem; color: var(--mute); }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.5rem 1.25rem; }
+  .gallery figure:nth-child(1), .gallery figure:nth-child(2) { grid-column: span 3; }
+  .gallery figure { grid-column: span 2; }
+  @media (max-width: 52rem) { .gallery { grid-template-columns: 1fr; } .gallery figure, .gallery figure:nth-child(1), .gallery figure:nth-child(2) { grid-column: auto; } }
+
+  /* design decisions */
+  .decisions { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+  .dec { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--rule); }
+  .dec .id { display: grid; gap: 0.35rem; align-content: start; }
+  .dec .id b { font: 700 1.1rem var(--font-mono); color: var(--accent); }
+  .dec h3 { font-size: 1.15rem; font-weight: 700; grid-column: 2 / -1; }
+  .dec .col { display: grid; gap: 0.35rem; font-size: 0.95rem; }
+  .dec .col .eyebrow { color: var(--mute); }
+  .dec .col.fix .eyebrow { color: var(--ok); }
+  .dec .delta { font: 600 0.82rem var(--font-mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); padding: 0.2rem 0.45rem; border-radius: 3px; justify-self: start; margin-top: 0.3rem; }
+  .dec-body { grid-column: 2 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; }
+  @media (max-width: 52rem) {
+    .dec { grid-template-columns: 1fr; gap: 0.75rem; }
+    .dec h3, .dec-body { grid-column: auto; }
+    .dec .id { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 0.75rem; }
+    .dec-body { grid-template-columns: 1fr; gap: 1rem; }
+  }
+  .verdict { margin-top: 1.5rem; padding: 1.1rem 1.25rem; background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--ok); border-radius: 4px; max-width: 46rem; }
+
+  /* safety table */
+  .tbl { overflow-x: auto; border-top: 2px solid var(--ink); }
+  table { border-collapse: collapse; width: 100%; min-width: 44rem; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--mute); }
+  td:first-child { font: 700 0.85rem var(--font-mono); color: var(--accent); white-space: nowrap; }
+  td.pl { font-family: var(--font-mono); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; font: 600 0.75rem var(--font-mono); padding: 0.1rem 0.45rem; border-radius: 3px; border: 1px solid currentColor; }
+  .pill.d { color: var(--warn); } .pill.e { color: var(--ok); } .pill.c { color: var(--mute); }
+
+  /* stack + docs */
+  .stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2rem; }
+  .stack h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .stack ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; font-size: 0.95rem; }
+  .stack li span { color: var(--mute); }
+  .docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .doc { display: grid; gap: 0.4rem; padding: 1.1rem 1.2rem; border: 1px solid var(--rule); border-radius: 4px; text-decoration: none; color: var(--ink); background: var(--surface); }
+  .doc:hover { border-color: var(--accent); }
+  .doc b { font: 700 1.05rem var(--font-display); }
+  .doc span { font-size: 0.9rem; color: var(--mute); }
+  .doc .eyebrow { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a href="../../index.html" data-i18n="nav.back">← Portfolio</a>
+    <nav aria-label="Sections">
+      <a href="#overview" data-i18n="nav.overview">Overview</a>
+      <a href="#throughput" data-i18n="nav.tp">Throughput</a>
+      <a href="#decisions" data-i18n="nav.dec">Design decisions</a>
+      <a href="#safety" data-i18n="nav.safety">Safety</a>
+      <a href="#documents" data-i18n="nav.docs">Documents</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="zh" aria-pressed="false" lang="zh-Hant">繁中</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <p class="eyebrow" data-i18n="hero.eyebrow">Logistics application · 3D simulation · Machine safety</p>
+    <h1 data-i18n="hero.h1">Goods-to-Robot <span>Order Fulfilment</span></h1>
+    <p class="lede" data-i18n="hero.lede">Five ABB robots run a warehouse picking cell: an <strong>IRB 6700 inside a cylinder shelf</strong> fetches bins, two <strong>IRB 1300s pick cartons with 3D vision</strong>, and two <strong>IRB 930 SCARAs</strong> sort them by bar code into an 8-lane put wall. Verified at <strong>677 items and 205 orders per hour</strong>.</p>
+    <div class="btns">
+      <a class="btn primary" href="demo.html" target="_blank" rel="noopener" data-demo-link data-i18n="hero.run">Run the live 3D simulation ↗</a>
+      <a class="btn" href="#decisions" data-i18n="hero.see">See the design decisions</a>
+    </div>
+    <div class="tags" aria-label="Topics">
+      <span class="tag">IRB 6700</span><span class="tag">IRB 1300</span><span class="tag">IRB 930</span><span class="tag">OmniCore SafeMove</span><span class="tag">3D vision</span><span class="tag">Three.js</span><span class="tag">ISO 12100</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <figure>
+      <div class="shot"><img src="img/cylinder-shelf.jpg" width="1600" height="900" data-i18n-alt="hero" alt="Cylinder shelf of red bins eight levels high with a white IRB 6700 robot at its centre, picking conveyors and robots beside it."></div>
+      <figcaption data-i18n="hero.cap"><b>The cylinder shelf.</b> 26 columns × 8 levels of bar-coded bins around the IRB 6700, with ports east to the picking loop and west to the restock loop.</figcaption>
+    </figure>
+
+    <div class="spec" role="list">
+      <div role="listitem"><b data-i18n="k1.v">677<small>/h</small></b><span data-i18n="k1">Items picked and sorted, Pareto demand</span></div>
+      <div role="listitem"><b data-i18n="k2.v">205<small>/h</small></b><span data-i18n="k2">Orders completed</span></div>
+      <div role="listitem"><b>88<small>%</small></b><span data-i18n="k3">Shelf robot utilisation, the bottleneck</span></div>
+      <div role="listitem"><b>5</b><span data-i18n="k4">Robots in one guarded zone</span></div>
+      <div role="listitem"><b>0</b><span data-i18n="k5">Reach failures or interlock violations in 4 × 1 h</span></div>
+      <div role="listitem"><b>0</b><span data-i18n="k6">High risks remaining after design changes</span></div>
+    </div>
+  </div>
+
+  <section id="overview">
+    <div class="wrap two">
+      <div class="prose">
+        <p class="eyebrow" data-i18n="ov.eyebrow">Overview</p>
+        <h2 style="font-size:clamp(1.6rem,3.2vw,2.3rem)" data-i18n="ov.h2">Rebuilding a real warehouse cell, then making it safe</h2>
+        <p data-i18n="ov.p1">The starting point was ABB Robotics' public "Logistics" video of a Cainiao warehouse, where robots work around an automated cylinder shelf. The video shows the idea but not the numbers, and its pickers and sorters stand next to open walkways.</p>
+        <p data-i18n="ov.p2">I rebuilt the cell with robots from the ABB library, using real kinematics and joint limits, and ran it as an order-fulfilment system: rolling waves of orders, dynamic bin slotting, a 3D image before every pick, bar-code checks and an exception route for no-reads.</p>
+        <p data-i18n="ov.p3">Running the model for hours exposed problems the video could not: a wrist singularity in the shelf robot, pickers reaching over their own bases, bins queuing at the wrong stop. Each one was fixed in the layout and recorded in the ISO 12100 risk assessment.</p>
+        <p class="eyebrow" style="color:var(--mute);text-transform:none;letter-spacing:0" data-i18n="ov.note">Products, orders, speeds and stopping times are assumptions. This is a concept study, not ABB's installation.</p>
+      </div>
+      <dl class="facts">
+        <div><dt data-i18n="f.r1">Shelf robot</dt><dd data-i18n="f.r1.v">R1 · IRB 6700-150/3.20 with an L-fork</dd></div>
+        <div><dt data-i18n="f.r23">Pickers</dt><dd data-i18n="f.r23.v">R2 / R3 · IRB 1300-12/1.4, 4-cup vacuum gripper, 3D camera over each bin stop</dd></div>
+        <div><dt data-i18n="f.s12">Sorters</dt><dd data-i18n="f.s12.v">S1 / S2 · IRB 930-22/1.05 SCARA</dd></div>
+        <div><dt data-i18n="f.shelf">Shelf</dt><dd data-i18n="f.shelf.v">26 columns × 8 levels, 144 slots, inner radius 2.0 m, 3.75 m high</dd></div>
+        <div><dt data-i18n="f.prod">Products</dt><dd data-i18n="f.prod.v">40 SKUs in three carton sizes, ≤ 1.6 kg</dd></div>
+        <div><dt data-i18n="f.put">Put wall</dt><dd data-i18n="f.put.v">8 powered lanes, one order per lane</dd></div>
+        <div><dt data-i18n="f.ops">Operators</dt><dd data-i18n="f.ops.v">2, both outside the fence: restock and packing</dd></div>
+        <div><dt data-i18n="f.role">My role</dt><dd data-i18n="f.role.v">Cell concept and layout, robot selection, process and cycle simulation, electrical plan, risk assessment</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="pr.eyebrow">Process sequence</p>
+        <h2 data-i18n="pr.h2">One order, from shelf to packing</h2>
+      </div>
+      <ol class="steps">
+        <li><h3 data-i18n="s1.h">Plan the wave</h3><p data-i18n="s1.p">The WMS gives each put-wall lane an order and adds up open lines per SKU.</p></li>
+        <li><h3 data-i18n="s2.h">Fetch the bin</h3><p data-i18n="s2.p">R1 takes the bin from the shelf to the east port. Returning bins get the nearest free slot.</p></li>
+        <li><h3 data-i18n="s3.h">Pick with 3D vision</h3><p data-i18n="s3.p">At stop P1 or P2 a 3D image is taken, then R2 or R3 places the carton into a free gap on the item belt.</p></li>
+        <li><h3 data-i18n="s4.h">Scan</h3><p data-i18n="s4.p">A bar-code arch reads every carton. No-reads go to an exception tote outside the fence.</p></li>
+        <li><h3 data-i18n="s5.h">Sort</h3><p data-i18n="s5.p">S1 or S2 puts the carton into the order case on its lane.</p></li>
+        <li><h3 data-i18n="s6.h">Pack and restock</h3><p data-i18n="s6.p">Finished cases run out to the packer. Empty bins leave by the west port for restock.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="simulation">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="sim.eyebrow">Live simulation</p>
+        <h2 data-i18n="sim.h2">Run the cell in your browser</h2>
+        <p data-i18n="sim.p">Three.js, no install. Switch between Pareto and flat demand, change robot speed, no-read rate, restock time and order size, open a door or press E-stop. English and 繁體中文.</p>
+      </div>
+      <div class="demo" id="demo">
+        <img src="img/simulation-ui.jpg" width="1600" height="900" data-i18n-alt="ui" alt="Simulation interface with process steps on the left, live metrics on the right and controls along the bottom.">
+        <div class="cta">
+          <button class="btn primary" id="loadDemo" type="button" data-i18n="sim.load">▶ Load simulation here (10 MB)</button>
+          <p data-i18n="sim.hint">Drag to orbit · right-drag to pan · wheel to zoom</p>
+        </div>
+      </div>
+      <p class="demo-note" data-i18n="sim.note">Works best on a desktop. <a href="demo.html" target="_blank" rel="noopener" data-demo-link>Open full screen ↗</a></p>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="g.eyebrow">Views</p>
+        <h2 data-i18n="g.h2">Inside the cell</h2>
+      </div>
+      <div class="gallery">
+        <figure>
+          <div class="shot"><img src="img/picking.jpg" loading="lazy" width="1600" height="900" data-i18n-alt="g1" alt="Two IRB 1300 robots picking cartons from red bins on roller conveyors onto a belt."></div>
+          <figcaption data-i18n="g1.cap"><b>Picking.</b> R2 and R3 pick from bins at stops P1 and P2, with a 3D camera over each stop.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/sortation.jpg" loading="lazy" width="1600" height="900" data-i18n-alt="g2" alt="Two SCARA robots above the item belt placing cartons into lanes."></div>
+          <figcaption data-i18n="g2.cap"><b>Sortation.</b> S1 and S2 take scanned cartons off the belt and put them into their order lanes.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/put-wall.jpg" loading="lazy" width="1600" height="900" data-i18n-alt="g3" alt="Put wall with eight lanes of order cases leading out through small tunnels."></div>
+          <figcaption data-i18n="g3.cap"><b>Put wall.</b> Eight lanes run out through small guarded tunnels to the packing operator.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/restock.jpg" loading="lazy" width="1600" height="900" data-i18n-alt="g4" alt="Restock station outside the fence with an operator and cartons beside a conveyor tunnel."></div>
+          <figcaption data-i18n="g4.cap"><b>Restock.</b> Empty bins come out through a muted tunnel to the operator, about 20 bins per hour.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="img/electrical-overlay.jpg" loading="lazy" width="1600" height="900" data-i18n-alt="g5" alt="Isometric view with cable trays, junction boxes and cabinets highlighted."></div>
+          <figcaption data-i18n="g5.cap"><b>Electrical plan.</b> 4 cabinets, 9 junction boxes, 84 devices, all on supported routes.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="throughput">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="tp.eyebrow">Verification</p>
+        <h2 data-i18n="tp.h2">Throughput under different order mixes</h2>
+        <p data-i18n="tp.p">Each scenario ran for one simulated hour with the same layout. The shelf robot stays the bottleneck; the packing operator becomes the limit for single-line orders.</p>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th data-i18n="tp.th1">Scenario</th><th data-i18n="tp.th2">Items / h</th><th data-i18n="tp.th3">Orders / h</th><th data-i18n="tp.th4">Note</th></tr></thead>
+          <tbody>
+            <tr><td data-i18n="tp1">Pareto demand</td><td class="pl">677</td><td class="pl">205</td><td data-i18n="tp1.n">R1 88 % busy, 2.0 items per bin presentation</td></tr>
+            <tr><td data-i18n="tp2">Flat demand</td><td class="pl">655</td><td class="pl">194</td><td data-i18n="tp2.n">All SKUs ordered equally often</td></tr>
+            <tr><td data-i18n="tp3">6-line orders</td><td class="pl">769</td><td class="pl">144</td><td data-i18n="tp3.n">With 5 % no-reads and 90 s restock</td></tr>
+            <tr><td data-i18n="tp4">Single-line orders</td><td class="pl">—</td><td class="pl">245</td><td data-i18n="tp4.n">At 70 % robot speed, packing operator 93 % busy</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="decisions">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="d.eyebrow">Design decisions</p>
+        <h2 data-i18n="d.h2">What the simulation and risk assessment changed</h2>
+        <p data-i18n="d.p">Items rated High after the first safeguarding pass, what the problem was, and how the design was changed. IDs refer to the hazard list in the assessment.</p>
+      </div>
+      <div class="decisions">
+        <article class="dec">
+          <div class="id"><b>H2</b><span class="eyebrow" data-i18n="d1.tag">Guarding</span></div>
+          <h3 data-i18n="d1.h">One guarded zone instead of open robots</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d1.p">In the video the pickers and sorters stand next to open walkways with no visible guarding. Only the shelf encloses the shelf robot.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d1.f">The whole system is one fenced zone. Material only crosses at the restock tunnel, the 8 put-wall lanes and a covered exception chute. Operators work outside.</p><span class="delta" data-i18n="d1.d">9 laser scanners, 100 % coverage incl. the ring interior</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H1</b><span class="eyebrow" data-i18n="d2.tag">Tooling</span></div>
+          <h3 data-i18n="d2.h">An L-fork to escape a wrist singularity</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d2.p">The first fork, mounted on a sideways flange, put the R1 wrist into the A5 = 0 singularity at mid levels. A4 and A6 turned about a full revolution for every bin move.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d2.f">L-fork under a downward flange, bin centre 0.55 m ahead of the TCP. All 8 levels in reach with a calm wrist.</p><span class="delta" data-i18n="d2.d">A6 travel 18 000° per hour → ±23°</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H1</b><span class="eyebrow" data-i18n="d3.tag">Shelf</span></div>
+          <h3 data-i18n="d3.h">Room for the wrist at the top level</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d3.p">With a 0.45 m fork offset the wrist reached the shelf face at the top level and rose into the top ring beam at 3.35 m.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d3.f">Fork offset increased to 0.55 m and the top ring raised to 3.75 m, keeping the arm inside the shelf face outside the served column.</p><span class="delta" data-i18n="d3.d">0 shelf contacts in 4 × 1 h</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H2</b><span class="eyebrow" data-i18n="d4.tag">Paths</span></div>
+          <h3 data-i18n="d4.h">Pickers that stop reaching over themselves</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d4.p">R2 and R3 stand between the bin stop and the item belt, so straight moves passed over their own bases.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d4.f">Bases turned to face west and every bin-to-belt move swings round the west side at r ≥ 0.6 m.</p><span class="delta" data-i18n="d4.d">94 reach failures in 120 s → 0</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H7</b><span class="eyebrow" data-i18n="d5.tag">Safeguards</span></div>
+          <h3 data-i18n="d5.h">Hand-detection curtains at the put wall</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d5.p">A whole-body curtain at the put-wall tunnel mouths needs 1250 mm of safety distance. Only 970 mm are available to the sorter cup.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d5.f">Tunnel mouths cut to 0.37 × 0.30 m so no one can climb in, guarded by 30 mm hand-detection curtains.</p><span class="delta" data-i18n="d5.d">Required 528 mm ≤ 970 mm available</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H8</b><span class="eyebrow" data-i18n="d6.tag">Flow</span></div>
+          <h3 data-i18n="d6.h">Choosing the bin stop at the right moment</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d6.p">Picking the stop when a bin arrived at the decision point sent most bins to P1 while P2 was still clearing. R3 sat idle and bins queued behind P1.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d6.f">The stop is chosen when the bin can actually leave the decision point: P2 unless a bin is already at or heading to it.</p><span class="delta" data-i18n="d6.d">R3 3 % busy → R2 / R3 43 / 40 %</span></div>
+          </div>
+        </article>
+        <article class="dec">
+          <div class="id"><b>H2</b><span class="eyebrow" data-i18n="d7.tag">Electrical</span></div>
+          <h3 data-i18n="d7.h">Moving a controller to shorten its cables</h3>
+          <div class="dec-body">
+            <div class="col"><span class="eyebrow" data-i18n="lbl.problem">Problem</span><p data-i18n="d7.p">With RC2 south of the cell, the R2 / R3 manipulator cables were over 30 m and its service area sat in the door swing. The north trunk had a 3.9 m unsupported span.</p></div>
+            <div class="col fix"><span class="eyebrow" data-i18n="lbl.fix">Resolution</span><p data-i18n="d7.f">RC2 moved north beside the shelf passage, a ladder tray added over the put-wall tunnels, junction boxes put on the trunk.</p><span class="delta" data-i18n="d7.d">Manipulator cables 31.9 m → ≤ 15.4 m</span></div>
+          </div>
+        </article>
+      </div>
+      <p class="verdict" data-i18n="d.verdict"><b>Result:</b> no residual High risk. Four hazards stay Medium (catastrophic severity, remote probability), which is inherent to a shelf robot and a 3.75 m storage ring and tolerable with SF1–SF7 implemented and the shelf designed and inspected to EN 15512 / EN 15635. Everything else is Low or Negligible.</p>
+    </div>
+  </section>
+
+  <section id="safety">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">ISO 13849-1</p>
+        <h2 data-i18n="sf.h2">Safety functions</h2>
+        <p data-i18n="sf.p">Required performance level (PLr) from the risk graph, and the level the chosen architecture achieves.</p>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>SF</th><th data-i18n="sf.th1">Function</th><th data-i18n="sf.th2">Input → logic → output</th><th>PLr</th><th>PL</th></tr></thead>
+          <tbody>
+            <tr><td>SF1</td><td data-i18n="sf1.n">Cell guard stop</td><td data-i18n="sf1.d">North and south doors with guard locking, 9 × OS32C → safety PLC → SafeStop cat. 1 of all five robots, all drives STO</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF2</td><td data-i18n="sf2.n">SafeMove zones and tool speed</td><td data-i18n="sf2.d">Safe Zone per robot, Tool Speed Supervision 2.5 / 2.2 / 2.5 m/s in automatic, 250 mm/s in T1</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF3</td><td data-i18n="sf3.n">Guard locking, cell doors</td><td data-i18n="sf3.d">D4SL-N unlocks only with all five robots at Stand Still and all drives in STO; personal padlock for ring entries</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF4</td><td data-i18n="sf4.n">Reset and restart prevention</td><td data-i18n="sf4.d">Reset only at the south-door HMI; refused while any scanner field is occupied, including the hidden ring interior</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF5</td><td data-i18n="sf5.n">Emergency stop</td><td data-i18n="sf5.d">7 E-stop stations → safety PLC → robots cat. 1, all drives STO</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill e">e</span></td></tr>
+            <tr><td>SF6</td><td data-i18n="sf6.n">Restock tunnel curtain with muting</td><td data-i18n="sf6.d">Multi-beam F3SG-PG, muted by two bin sensors only while a bin crosses (≤ 4 s) → R1 cat. 1 + restock loop STO</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+            <tr><td>SF7</td><td data-i18n="sf7.n">Put-wall curtains and lane interlock</td><td data-i18n="sf7.d">30 mm F3SG-PG per 4-lane block; lane drive enabled only with the sorter tool out of the lane zone → S1 / S2 cat. 1 + lanes STO</td><td class="pl"><span class="pill d">d</span></td><td class="pl"><span class="pill d">d</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="t.eyebrow">Tools and standards</p>
+        <h2 data-i18n="t.h2">What it was built with</h2>
+      </div>
+      <div class="stack">
+        <div><h3 data-i18n="t1.h">Robots and controls</h3><ul data-i18n="t1.l"><li>IRB 6700, IRB 1300, IRB 930 <span>· OmniCore V250XT / C30</span></li><li>RobotStudio <span>· PIM.xml kinematics</span></li><li>SafeMove <span>· zones, tool speed, stand still</span></li><li>3D vision, bar-code arch, OS32C scanners, F3SG curtains</li></ul></div>
+        <div><h3 data-i18n="t2.h">Simulation</h3><ul data-i18n="t2.l"><li>Three.js <span>· WebGL, single HTML file</span></li><li>WMS waves, dynamic slotting, bin routing</li><li>Automated 4 × 1 h verification runs</li><li>Cable tray graph and fill check</li></ul></div>
+        <div><h3 data-i18n="t3.h">Standards</h3><ul data-i18n="t3.l"><li>ISO 12100 <span>· risk assessment</span></li><li>ISO 13849-1/-2 <span>· PL and validation</span></li><li>ISO 10218-1/-2, ISO 13855</li><li>EN 15512, EN 15635, EN 15620 <span>· storage racking</span></li><li>IEC 60204-1, IEC 61496, EN 619</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="documents">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="doc.eyebrow">Documents</p>
+        <h2 data-i18n="doc.h2">Deliverables</h2>
+      </div>
+      <div class="docs">
+        <a class="doc" href="demo.html" target="_blank" rel="noopener" data-demo-link><span class="eyebrow" data-i18n="doc1.e">Interactive</span><b data-i18n="doc1.b">3D cell simulation ↗</b><span data-i18n="doc1.s">Full-screen Three.js model, 10 MB</span></a>
+        <a class="doc" href="docs/risk-assessment-en.html" target="_blank" rel="noopener"><span class="eyebrow">RA-LOG-01 · RevA</span><b data-i18n="doc2.b">Risk assessment (English) ↗</b><span data-i18n="doc2.s">ISO 12100, 16 + 3 electrical hazards, 7 safety functions</span></a>
+        <a class="doc" href="docs/risk-assessment-zh.html" target="_blank" rel="noopener" lang="zh-Hant"><span class="eyebrow">RA-LOG-01 · RevA</span><b>風險評估（繁體中文）↗</b><span>ISO 12100，16 項＋3 項電氣危害、7 項安全功能</span></a>
+        <a class="doc" href="docs/risk-assessment-reva.xlsx" download data-xlsx><span class="eyebrow">Excel · RevA</span><b data-i18n="doc4.b">Risk assessment workbook ↓</b><span data-i18n="doc4.s">Hazard register as a spreadsheet</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span data-i18n="foot">Goods-to-Robot Order Fulfilment · 2026</span>
+    <a href="../../index.html" data-i18n="foot.back">← All projects</a>
+  </div>
+</footer>
+
+<script src="../../assets/i18n.js"></script>
+<script>
+  initI18n({
+    _title: '貨到機器人訂單履行',
+    'nav.back': '← 作品集', 'nav.overview': '概覽', 'nav.tp': '產能', 'nav.dec': '設計決策', 'nav.safety': '安全', 'nav.docs': '文件',
+    'hero.eyebrow': '物流應用 · 3D 模擬 · 機械安全',
+    'hero.h1': '貨到機器人<span>訂單履行</span>',
+    'hero.lede': '五台 ABB 機器人組成倉儲揀貨工作站：<strong>圓筒料架中的 IRB 6700</strong> 負責取放料箱，兩台 <strong>IRB 1300 以 3D 視覺揀取紙箱</strong>，兩台 <strong>IRB 930 SCARA</strong> 依條碼分揀至 8 通道放置牆。驗證產能為<strong>每小時 677 件、205 張訂單</strong>。',
+    'hero.run': '執行即時 3D 模擬 ↗', 'hero.see': '查看設計決策',
+    'alt:hero': '八層高的紅色料箱圓筒料架，中央為白色 IRB 6700 機器人，旁邊是揀貨輸送線與機器人。',
+    'hero.cap': '<b>圓筒料架。</b>IRB 6700 周圍為 26 欄 × 8 層的條碼料箱，東埠通往揀貨迴路，西埠通往補貨迴路。',
+    'k1.v': '677<small>件/時</small>', 'k1': '揀取並分揀的件數（柏拉圖需求）',
+    'k2.v': '205<small>張/時</small>', 'k2': '完成的訂單數',
+    'k3': '料架機器人稼動率，即瓶頸', 'k4': '台機器人位於同一防護區', 'k5': '4 × 1 h 內可達性失敗或互鎖違規次數', 'k6': '設計變更後剩餘的高風險項目',
+    'ov.eyebrow': '概覽',
+    'ov.h2': '重建真實倉儲工作站，再讓它變安全',
+    'ov.p1': '起點是 ABB Robotics 公開的「Logistics」影片：菜鳥倉庫中機器人圍繞自動化圓筒料架作業。影片呈現了概念，但沒有數據，而且揀貨與分揀機器人就在開放走道旁。',
+    'ov.p2': '我以 ABB 機器人庫中的機型、真實的運動學與關節極限重建了工作站，並把它當作訂單履行系統運轉：滾動波次、動態料位、每次揀取前拍攝 3D 影像、條碼檢查，以及無法讀取時的例外路徑。',
+    'ov.p3': '長時間運轉模型後，暴露出影片看不到的問題：料架機器人的手腕奇異點、揀貨機器人越過自身基座、料箱在錯誤的停止位排隊。每一項都在佈局中修正，並記錄在 ISO 12100 風險評估裡。',
+    'ov.note': '產品、訂單、速度與停止時間皆為假設。這是一項概念研究，並非 ABB 的實際案場。',
+    'f.r1': '料架機器人', 'f.r1.v': 'R1 · IRB 6700-150/3.20，L 形貨叉',
+    'f.r23': '揀貨機器人', 'f.r23.v': 'R2 / R3 · IRB 1300-12/1.4，4 吸盤真空夾爪，每個料箱停止位上方設 3D 相機',
+    'f.s12': '分揀機器人', 'f.s12.v': 'S1 / S2 · IRB 930-22/1.05 SCARA',
+    'f.shelf': '料架', 'f.shelf.v': '26 欄 × 8 層，144 料位，內半徑 2.0 m，高 3.75 m',
+    'f.prod': '產品', 'f.prod.v': '40 個 SKU，三種紙箱尺寸，≤ 1.6 kg',
+    'f.put': '放置牆', 'f.put.v': '8 條動力通道，每條通道一張訂單',
+    'f.ops': '作業員', 'f.ops.v': '2 名，皆在圍籬外：補貨與包裝',
+    'f.role': '我的角色', 'f.role.v': '工作站概念與佈局、機器人選型、製程與週期模擬、電氣規劃、風險評估',
+    'pr.eyebrow': '製程順序', 'pr.h2': '一張訂單，從料架到包裝',
+    's1.h': '規劃波次', 's1.p': 'WMS 為每條放置牆通道分配一張訂單，並彙總各 SKU 的未完成行數。',
+    's2.h': '取出料箱', 's2.p': 'R1 從料架取出料箱送至東埠；回庫的料箱放入最近的空料位。',
+    's3.h': '3D 視覺揀取', 's3.p': '在停止位 P1 或 P2 拍攝 3D 影像，由 R2 或 R3 將紙箱放到物品輸送帶的空隙中。',
+    's4.h': '掃描', 's4.p': '條碼門架讀取每個紙箱，無法讀取者送至圍籬外的例外料盒。',
+    's5.h': '分揀', 's5.p': 'S1 或 S2 將紙箱放入其通道上的訂單箱。',
+    's6.h': '包裝與補貨', 's6.p': '完成的訂單箱送出給包裝人員；空料箱經西埠送出補貨。',
+    'sim.eyebrow': '即時模擬', 'sim.h2': '在瀏覽器中執行工作站',
+    'sim.p': 'Three.js，免安裝。可切換柏拉圖與平均需求，調整機器人速度、無法讀取率、補貨時間與訂單大小，打開門或按下緊急停止。提供英文與繁體中文介面。',
+    'alt:ui': '模擬介面：左側為製程步驟，右側為即時數據，下方為控制列。',
+    'sim.load': '▶ 在此載入模擬（10 MB）', 'sim.hint': '拖曳旋轉 · 右鍵拖曳平移 · 滾輪縮放',
+    'sim.note': '建議使用桌上型電腦。<a href="demo.html#zh" target="_blank" rel="noopener" data-demo-link>全螢幕開啟 ↗</a>',
+    'g.eyebrow': '視圖', 'g.h2': '工作站內部',
+    'alt:g1': '兩台 IRB 1300 機器人從滾筒輸送線上的紅色料箱揀取紙箱放到輸送帶上。',
+    'g1.cap': '<b>揀貨。</b>R2 與 R3 在停止位 P1、P2 從料箱揀取，每個停止位上方都有 3D 相機。',
+    'alt:g2': '兩台 SCARA 機器人在物品輸送帶上方將紙箱放入通道。',
+    'g2.cap': '<b>分揀。</b>S1 與 S2 從輸送帶取下已掃描的紙箱，放入各自的訂單通道。',
+    'alt:g3': '具八條通道的放置牆，訂單箱經小型隧道送出。',
+    'g3.cap': '<b>放置牆。</b>八條通道經有防護的小型隧道通往包裝人員。',
+    'alt:g4': '圍籬外的補貨站，作業員與紙箱位於輸送隧道旁。',
+    'g4.cap': '<b>補貨。</b>空料箱經遮蔽隧道送出給作業員，約每小時 20 箱。',
+    'alt:g5': '標示線槽、接線盒與電櫃的等角視圖。',
+    'g5.cap': '<b>電氣規劃。</b>4 個電櫃、9 個接線盒、84 個元件，全部敷設於有支撐的路徑。',
+    'tp.eyebrow': '驗證', 'tp.h2': '不同訂單組合下的產能',
+    'tp.p': '每個情境以相同佈局模擬運轉一小時。料架機器人始終是瓶頸；單行訂單時則由包裝人員成為限制。',
+    'tp.th1': '情境', 'tp.th2': '件 / 時', 'tp.th3': '訂單 / 時', 'tp.th4': '說明',
+    'tp1': '柏拉圖需求', 'tp1.n': 'R1 稼動 88 %，每次料箱呈現 2.0 件',
+    'tp2': '平均需求', 'tp2.n': '所有 SKU 訂購頻率相同',
+    'tp3': '6 行訂單', 'tp3.n': '無法讀取 5 %、補貨 90 s',
+    'tp4': '單行訂單', 'tp4.n': '機器人 70 % 速度，包裝人員稼動 93 %',
+    'd.eyebrow': '設計決策', 'd.h2': '模擬與風險評估改變了什麼',
+    'd.p': '首輪防護後評為「高」的項目：問題是什麼，以及設計如何修改。編號對應風險評估中的危害清單。',
+    'lbl.problem': '問題', 'lbl.fix': '處理方式',
+    'd1.tag': '安全防護', 'd1.h': '以單一防護區取代開放式機器人',
+    'd1.p': '影片中揀貨與分揀機器人位於開放走道旁，未見防護；料架機器人僅由料架包圍。',
+    'd1.f': '整個系統為單一圍籬防護區。物料只經補貨隧道、8 條放置牆通道與有蓋例外滑槽進出，作業員僅在外部作業。',
+    'd1.d': '9 台雷射掃描器，涵蓋率 100 %（含圓環內部）',
+    'd2.tag': '工具', 'd2.h': '以 L 形貨叉避開手腕奇異點',
+    'd2.p': '初版貨叉裝在側向法蘭上，使 R1 手腕在中段層位進入 A5 = 0 奇異點，每搬移一次料箱 A4 與 A6 幾乎轉一整圈。',
+    'd2.f': '改為向下法蘭下的 L 形貨叉，料箱中心在 TCP 前方 0.55 m。8 層皆可達，手腕動作平穩。',
+    'd2.d': 'A6 每小時轉動 18 000° → ±23°',
+    'd3.tag': '料架', 'd3.h': '為最上層留出手腕空間',
+    'd3.p': '貨叉偏移 0.45 m 時，手腕在最上層碰到料架面，並升入 3.35 m 的頂部環樑。',
+    'd3.f': '貨叉偏移加大到 0.55 m，頂部環樑升至 3.75 m，服務欄位以外手臂保持在料架面內側。',
+    'd3.d': '4 × 1 h 內料架接觸 0 次',
+    'd4.tag': '路徑', 'd4.h': '讓揀貨機器人不再越過自身基座',
+    'd4.p': 'R2 與 R3 位於料箱停止位與物品輸送帶之間，直線移動會越過自己的基座。',
+    'd4.f': '基座轉向朝西，所有料箱到輸送帶的移動一律經西側以 r ≥ 0.6 m 迴轉。',
+    'd4.d': '前 120 s 可達性失敗 94 次 → 0 次',
+    'd5.tag': '防護裝置', 'd5.h': '放置牆改用手部檢知光幕',
+    'd5.p': '放置牆隧道口若用全身光幕需 1250 mm 安全距離，但到分揀吸盤只有 970 mm。',
+    'd5.f': '隧道口縮小為 0.37 × 0.30 m，人員無法爬入，並以 30 mm 手部檢知光幕防護。',
+    'd5.d': '需求 528 mm ≤ 可用 970 mm',
+    'd6.tag': '物流', 'd6.h': '在正確時機選擇料箱停止位',
+    'd6.p': '料箱一抵達判斷點就選擇停止位，導致 P2 還在清空時大多數料箱都送往 P1，R3 閒置，料箱在 P1 後方排隊。',
+    'd6.f': '改為料箱真正能離開判斷點時才選擇停止位：除非已有料箱在或正前往 P2，否則送往 P2。',
+    'd6.d': 'R3 稼動 3 % → R2 / R3 43 / 40 %',
+    'd7.tag': '電氣', 'd7.h': '移動控制櫃以縮短電纜',
+    'd7.p': 'RC2 位於工作站南側時，R2 / R3 本體電纜超過 30 m，維修區落在門的迴轉範圍內；北側主線槽有 3.9 m 無支撐跨距。',
+    'd7.f': 'RC2 移至北側料架通道旁，放置牆隧道上方加設梯式線槽，接線盒改設於主線槽上。',
+    'd7.d': '本體電纜 31.9 m → ≤ 15.4 m',
+    'd.verdict': '<b>結果：</b>無殘餘「高」風險。四項危害維持「中」（災難性嚴重度、極少機率），這是料架機器人與 3.75 m 儲存圓環固有的風險，在 SF1–SF7 實施且料架依 EN 15512 / EN 15635 設計與檢查後可容忍。其餘皆為「低」或「可忽略」。',
+    'sf.h2': '安全功能', 'sf.p': '由風險圖得出的要求性能等級（PLr），以及所選架構達到的等級。',
+    'sf.th1': '功能', 'sf.th2': '輸入 → 邏輯 → 輸出',
+    'sf1.n': '工作站防護停止', 'sf1.d': '北、南門防護鎖與 9 台 OS32C → 安全 PLC → 五台機器人 SafeStop cat. 1，所有驅動 STO',
+    'sf2.n': 'SafeMove 區域與工具速度', 'sf2.d': '每台機器人設 Safe Zone，自動時工具速度監視 2.5 / 2.2 / 2.5 m/s，T1 時 250 mm/s',
+    'sf3.n': '工作站門防護鎖', 'sf3.d': 'D4SL-N 僅在五台機器人皆 Stand Still 且所有驅動 STO 時解鎖；進入圓環時使用個人掛鎖',
+    'sf4.n': '復歸與防止重啟', 'sf4.d': '僅能在南門 HMI 復歸；任一掃描器防護區有人時拒絕，包含被料架遮蔽的圓環內部',
+    'sf5.n': '緊急停止', 'sf5.d': '7 處緊急停止 → 安全 PLC → 機器人 cat. 1，所有驅動 STO',
+    'sf6.n': '補貨隧道光幕與遮蔽', 'sf6.d': '多光束 F3SG-PG，僅在料箱通過時由兩個料箱感測器遮蔽（≤ 4 s）→ R1 cat. 1＋補貨迴路 STO',
+    'sf7.n': '放置牆光幕與通道互鎖', 'sf7.d': '每 4 條通道一組 30 mm F3SG-PG；僅在分揀工具離開通道區時致能通道驅動 → S1 / S2 cat. 1＋通道 STO',
+    't.eyebrow': '工具與標準', 't.h2': '使用的技術',
+    't1.h': '機器人與控制', 't1.l': '<li>IRB 6700、IRB 1300、IRB 930 <span>· OmniCore V250XT / C30</span></li><li>RobotStudio <span>· PIM.xml 運動學</span></li><li>SafeMove <span>· 區域、工具速度、靜止監控</span></li><li>3D 視覺、條碼門架、OS32C 掃描器、F3SG 光幕</li>',
+    't2.h': '模擬', 't2.l': '<li>Three.js <span>· WebGL，單一 HTML 檔</span></li><li>WMS 波次、動態料位、料箱路由</li><li>自動化 4 × 1 h 驗證運轉</li><li>線槽路徑圖與填充率檢查</li>',
+    't3.h': '標準', 't3.l': '<li>ISO 12100 <span>· 風險評估</span></li><li>ISO 13849-1/-2 <span>· PL 與驗證</span></li><li>ISO 10218-1/-2、ISO 13855</li><li>EN 15512、EN 15635、EN 15620 <span>· 倉儲料架</span></li><li>IEC 60204-1、IEC 61496、EN 619</li>',
+    'doc.eyebrow': '文件', 'doc.h2': '成果文件',
+    'doc1.e': '互動', 'doc1.b': '3D 工作站模擬 ↗', 'doc1.s': '全螢幕 Three.js 模型，10 MB',
+    'doc2.b': '風險評估（英文）↗', 'doc2.s': 'ISO 12100，16 項＋3 項電氣危害、7 項安全功能',
+    'doc4.b': '風險評估工作簿 ↓', 'doc4.s': '試算表格式的危害清單',
+    'foot': '貨到機器人訂單履行 · 2026', 'foot.back': '← 所有作品'
+  });
+
+  // The simulation has its own EN / 繁中 switch; open it in the page's language.
+  function demoSrc() { return 'demo.html#' + (window.currentLang === 'zh' ? 'zh' : 'en'); }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-demo-link]');
+    if (a) a.href = demoSrc();
+  }, true);
+  document.getElementById('loadDemo').addEventListener('click', function () {
+    var box = document.getElementById('demo');
+    var f = document.createElement('iframe');
+    f.src = demoSrc();
+    f.title = window.currentLang === 'zh' ? '貨到機器人訂單履行即時 3D 模擬' : 'Goods-to-robot order fulfilment, live 3D simulation';
+    f.allow = 'fullscreen';
+    box.replaceChildren(f);
+  });
+</script>
+</body>
+</html>

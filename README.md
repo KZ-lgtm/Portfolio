@@ -10,6 +10,8 @@ projects/pp-stacking/
   demo.html                    live Three.js simulation (self-contained)
   docs/risk-assessment-*.html  ISO 12100 risk assessment, EN / 繁中
   img/                         screenshots captured from the simulation
+projects/logistics/              second case study, same layout (+ Excel risk assessment)
+assets/i18n.js                 EN / 繁中 switch shared by all pages
 ```
 
 To add a project, copy `projects/pp-stacking/` as a template and add a card to `index.html`.
